@@ -4,3 +4,7 @@
 
 /.vs
 /Lexer/.vs/Lexer/v15
+*.sln
+*.vcxproj
+*.filters
+*.user
