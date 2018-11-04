@@ -3,7 +3,7 @@
 class IdentifierParser :
   public BasicParser {
 public:
-  IdentifierParser ();
+  IdentifierParser (int lineNum, int offset;
   ~IdentifierParser ();
 };
 

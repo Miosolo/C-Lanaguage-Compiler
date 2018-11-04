@@ -3,7 +3,7 @@
 class PreprocessingParser :
   public StringParser {
 public:
-  PreprocessingParser ();
+  PreprocessingParser (int lineNum, int offset);
   ~PreprocessingParser ();
 };
 

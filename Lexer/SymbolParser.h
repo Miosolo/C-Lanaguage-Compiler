@@ -3,7 +3,7 @@
 class SymbolParser :
   public BasicParser {
 public:
-  SymbolParser ();
+  SymbolParser (int lineNum, int offset);
   ~SymbolParser ();
 };
 

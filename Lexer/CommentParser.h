@@ -3,7 +3,7 @@
 class CommentParser :
   public StringParser {
 public:
-  CommentParser ();
+  CommentParser (int lineNum, int offset);
   ~CommentParser ();
 };
 

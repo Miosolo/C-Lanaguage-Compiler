@@ -3,7 +3,7 @@
 class StringParser :
   public BasicParser {
 public:
-  StringParser ();
+  StringParser (int lineNum, int offset);
   ~StringParser ();
 };
 

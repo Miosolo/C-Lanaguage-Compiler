@@ -3,11 +3,9 @@
 
 class BasicParser {
 private:
-  struct ID thisID;
-  enum returnStates { 
-    FINISHED, 
-    CONTINUE,
-  };
+  PID thisID;
+  int lineNum;
+  int lineOffset;
 
 private:
   virtual void craeteID ();
@@ -17,6 +15,7 @@ private:
 public:
   BasicParser ();
   virtual enum returnStates feedChar (char thisChar);
+  PID returnPID ();
   virtual ~BasicParser ();
 };
 
@@ -26,4 +25,8 @@ BasicParser::BasicParser () {}
 
 
 BasicParser::~BasicParser () {}
+
+PID BasicParser::returnPID () {
+  return thisID;
+}
 
