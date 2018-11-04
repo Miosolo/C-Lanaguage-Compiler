@@ -8,7 +8,7 @@ private:
   double devAcc;
 
 private:
-  void setState() 
+  void setState ();
 
 public:
   NumParser (int lineNum, int offset);
