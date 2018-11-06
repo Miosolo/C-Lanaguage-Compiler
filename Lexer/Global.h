@@ -2,7 +2,7 @@
 #include "stdafx.h"
 
 // Global Constants
-enum parserStates {
+enum class parserStates {
   INITIAL,
   CONTINUING,
   FINISHED,
@@ -14,12 +14,12 @@ enum parserStates {
 // Structs
 typedef struct ID {
   int token;
-  union unionV {
+  union {
     double numValue;
-    char* strValue;
+    std::string* strValue;
   } unionValue;
-  int lineNum;
-  int lineOffset;
+  int line;
+  int offset;
 } ID, *PID;
 
 

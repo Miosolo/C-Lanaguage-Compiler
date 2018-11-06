@@ -16,7 +16,7 @@ Reader::Reader (char* input, Lexer *lexer) {
     lineNum = 1;
     lineOffset = 0;
     traceBackFlag = false;
-    workingState = SEARCHING;
+    readerState = ReaderStates::SEARCHING;
   } else {
     // TO-DO: show error: no such file
     delete this;
@@ -33,8 +33,8 @@ char Reader::readChar () {
   return t;
 }
 
-void Reader::setState (enum workingStates newState) {
-  workingState = newState;
+void Reader::setState (enum ReaderStates newState) {
+  readerState = newState;
 }
 
 void Reader::setNewLine () {
@@ -59,7 +59,7 @@ bool Reader::openInputFile (char* input) {
 void Reader::run () {
   do {
     step ();
-  } while (workingState != TERMINATE);
+  } while (readerState != ReaderStates::TERMINATE);
 }
 
 void Reader::step () {
@@ -71,10 +71,10 @@ void Reader::step () {
     t = readChar (); //即使读到了文件末尾，依然读EOF
   }
 
-  switch (workingState) {
-  case Reader::SEARCHING:
+  switch (readerState) {
+  case ReaderStates::SEARCHING:
     if (!isblank (t) && t != EOF) {
-      setState (PARSING);
+      setState (ReaderStates::PARSING);
       if (isalpha (t) || t == '_') {
         parser = new IdentifierParser (lineNum, lineOffset);
       } else if (isdigit (t)) {
@@ -88,41 +88,43 @@ void Reader::step () {
       }
       parser->feedChar (t);
     } else if (t != EOF) {
-      setState (SEARCHING);
+      setState (ReaderStates::SEARCHING);
     } else { // t == EOF
-      setState (TERMINATE);
+      setState (ReaderStates::TERMINATE);
     }
     break;
-  case Reader::PARSING:
-    enum returnStates thisState = parser->feedChar (t);
+  case ReaderStates::PARSING:
+    parserStates thisState = parser->feedChar (t);
     switch (thisState) {
-    case FINISHED:
+    case parserStates::CONTINUING:
+      break;
+    case parserStates::FINISHED:
       lexer->deliverOutput (parser->returnPID ());
       traceBack (); //如果解析完成，说明此个字符并非属于该symbol的一部分，应该属于下一个symbol
       delete parser;
       parser = NULL;
-      setState (SEARCHING);
+      setState (ReaderStates::SEARCHING);
       break;
-    case SWITCH_TO_PREPROCESSING:
+    case parserStates::SWITCH_TO_PREPROCESSING:
       delete parser;
       parser = new PreprocessingParser (lineNum, lineOffset);
-      setState (PARSING);
+      setState (ReaderStates::PARSING);
       break;
-    case SWITCH_TO_COMMENT_DODUBLE_SLASH:
+    case parserStates::SWITCH_TO_COMMENT_DODUBLE_SLASH:
       delete parser;
       parser = new StringParser (lineNum, lineOffset, DOUBLE_SLASH);// TO-DO: parameter: enum common type
-      setState (PARSING);
+      setState (ReaderStates::PARSING);
       break;
-    case SWITCH_TO_COMMENT_SLASH_STAR:
+    case parserStates::SWITCH_TO_COMMENT_SLASH_STAR:
       delete parser;
       parser = new StringParser (lineNum, lineOffset, SLASH_STAR);
-      setState (PARSING);
+      setState (ReaderStates::PARSING);
       break;
-    case CONTINUING: default:
+   default:
       break;
     }
     break;
-  case TERMINATE: default: //TERMINATE: 由外部work()予以销毁
+  case ReaderStates::TERMINATE: default: //TERMINATE: 由外部work()予以销毁
     break;
   }
 }

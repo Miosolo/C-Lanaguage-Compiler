@@ -14,10 +14,10 @@ private:
   struct BasicParser *parser;
 
   static const char EOL = '\n';
-  static enum workingStates {SEARCHING, PARSING, TERMINATE} workingState;
+  enum class ReaderStates {SEARCHING, PARSING, TERMINATE} readerState;
 
 private:
-  void setState (enum workingStates newState);
+  void setState (enum ReaderStates newState);
   char readChar ();
   void step ();
   void setNewLine ();
@@ -29,4 +29,3 @@ public:
   void run ();
   ~Reader ();
 };
-

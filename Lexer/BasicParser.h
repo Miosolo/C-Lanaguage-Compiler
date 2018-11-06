@@ -2,27 +2,24 @@
 #include "Global.h"
 
 class BasicParser {
-private:
+protected:
   PID thisID;
-  int lineNum;
-  int lineOffset;
 
 private:
-  virtual void craeteID ();
-  virtual void setState ();
-  virtual bool checkValid ();
+  virtual void setState () = 0;
 
 public:
-  BasicParser ();
-  virtual enum returnStates feedChar (char thisChar);
+  virtual parserStates feedChar (char feed) = 0;
   PID returnPID ();
+  BasicParser (int lineNum, int lineOffset);
   virtual ~BasicParser ();
 };
 
-
-
-BasicParser::BasicParser () {}
-
+BasicParser::BasicParser (int lineNum, int lineOffset) {
+  thisID = new struct ID;
+  thisID->line = lineNum;
+  thisID->offset = lineOffset;
+}
 
 BasicParser::~BasicParser () {}
 
