@@ -12,6 +12,7 @@ public:
   virtual parserStates feedChar (char feed) = 0;
   PID returnPID ();
   BasicParser (int lineNum, int lineOffset);
+  BasicParser::BasicParser ();
   virtual ~BasicParser ();
 };
 
@@ -20,6 +21,8 @@ BasicParser::BasicParser (int lineNum, int lineOffset) {
   thisID->line = lineNum;
   thisID->offset = lineOffset;
 }
+
+BasicParser::BasicParser () {}
 
 BasicParser::~BasicParser () {}
 

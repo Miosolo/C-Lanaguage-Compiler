@@ -14,7 +14,7 @@ parserStates IdentifierParser::feedChar (char feed) {
   } else {
     thisID->unionValue.strValue = new std::string (tempName);
     thisID->token = 0; //TO-DO: token?
-    return parserStates::FINISHED;
+    return parserStates::OVERSTEP;
   }
 }
 

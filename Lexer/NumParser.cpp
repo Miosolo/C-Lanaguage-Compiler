@@ -50,7 +50,7 @@ parserStates NumParser::feedChar (char feed) {
     break;
   case NumParser::NS::TERM:
     thisID->unionValue.numValue = intAcc + decAcc;
-    return parserStates::FINISHED;
+    return parserStates::OVERSTEP;
     break;
   default:
     break;
