@@ -5,9 +5,6 @@ class BasicParser {
 protected:
   PID thisID;
 
-private:
-  virtual void setState () = 0;
-
 public:
   virtual parserStates feedChar (char feed) = 0;
   PID returnPID ();

@@ -78,7 +78,7 @@ void Reader::step () {
       if (isalpha (t) || t == '_') {
         parser = new IdentifierParser (lineNum, lineOffset);
       } else if (isdigit (t)) {
-        parser = new struct NumParser (lineNum, lineOffset);
+        parser = new NumParser (lineNum, lineOffset);
       } else if (t == '"') {
         parser = new StringParser (lineNum, lineOffset);
       } else if (t == '#') {
@@ -98,26 +98,22 @@ void Reader::step () {
     switch (thisState) {
     case parserStates::CONTINUING:
       break;
+    case parserStates::OVERSTEP:
+      traceBack (); //如果发生回溯，说明此个字符并非属于该symbol的一部分，应该属于下一个symbol
+      /*-- Intentional Fall-down-- */
     case parserStates::FINISHED:
       lexer->deliverOutput (parser->returnPID ());
-      traceBack (); //如果解析完成，说明此个字符并非属于该symbol的一部分，应该属于下一个symbol
       delete parser;
       parser = NULL;
       setState (ReaderStates::SEARCHING);
       break;
-    case parserStates::SWITCH_TO_PREPROCESSING:
-      delete parser;
-      parser = new PreprocessingParser (lineNum, lineOffset);
-      setState (ReaderStates::PARSING);
-      break;
     case parserStates::SWITCH_TO_COMMENT_DODUBLE_SLASH:
       delete parser;
-      parser = new StringParser (lineNum, lineOffset, DOUBLE_SLASH);// TO-DO: parameter: enum common type
-      setState (ReaderStates::PARSING);
+      parser = new CommentParser (lineNum, lineOffset, parserStates::SWITCH_TO_COMMENT_DODUBLE_SLASH);
       break;
     case parserStates::SWITCH_TO_COMMENT_SLASH_STAR:
       delete parser;
-      parser = new StringParser (lineNum, lineOffset, SLASH_STAR);
+      parser = new CommentParser (lineNum, lineOffset, parserStates::SWITCH_TO_COMMENT_SLASH_STAR);
       setState (ReaderStates::PARSING);
       break;
    default:

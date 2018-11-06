@@ -35,7 +35,7 @@ void Writer::writeFile () {
   for each (PID p in symbolList) {
     fprintf (outfile, "%3d,", p->token);
     fprintf (outfile, "%s", p->unionValue.strValue);//TO-DO: Determine the type by token -> to use numValue/ stringValue
-    fprintf (outfile, "%d,%d,\n", p->lineNum, p->lineOffset);
+    fprintf (outfile, "%d,%d,\n", p->line, p->offset);
   }
 }
 
