@@ -1,10 +1,11 @@
 #pragma once
 #include "Global.h"
+#include <vector>
 
 class Writer {
 private:
   FILE *outfile;
-  std::list<PID> symbolList;
+  std::vector<PID> symbolList;
 
 private:
   bool openOutputFile (char *outPara);

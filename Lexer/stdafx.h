@@ -4,7 +4,3 @@
 #include <cstring>
 #include <cctype>
 #include <cstdio>
-#include <cstdlib>
-#include <list>
-#include <typeinfo>
-#include <string>
