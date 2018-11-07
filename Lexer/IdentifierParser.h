@@ -1,5 +1,5 @@
 #pragma once
-#include "BasicParser.h"
+#include "Global.h"
 #include <map>
 
 class IdentifierParser :

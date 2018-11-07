@@ -6,12 +6,6 @@ const std::map<GlobalError, std::string> errorMessageMap = {
   {GlobalError::NO_TRANSTABLE, "Error: No transTable.csv found in the working path.\n"}
 };
 
-ErrorNotifier::ErrorNotifier (GlobalError error) {
-  showError (error);
-}
-
-ErrorNotifier::~ErrorNotifier () {}
-
 void ErrorNotifier::showError (GlobalError error) {
   auto result = errorMessageMap.find (error);
   if (result != errorMessageMap.end ()) {

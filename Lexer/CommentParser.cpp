@@ -1,4 +1,3 @@
-#include "stdafx.h"
 #include "CommentParser.h"
 
 CommentParser::CommentParser (int lineNum, int lineOffset, GPS initMode):

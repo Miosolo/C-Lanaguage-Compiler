@@ -1,5 +1,12 @@
 #pragma once
-#include "stdafx.h"
+#include "targetver.h"
+#include <cstring>
+#include <cctype>
+#include <cstdio>
+#include <string>
+
+#include "ErrorNotifier.h"
+#include "BasicParser.h"
 
 // Global Constants
 enum class GPS { // Stands for GlobalParserStates

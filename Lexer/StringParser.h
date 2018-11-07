@@ -1,4 +1,5 @@
 #pragma once
+#include "Global.h"
 #include "BasicParser.h"
 class StringParser :
   public BasicParser {

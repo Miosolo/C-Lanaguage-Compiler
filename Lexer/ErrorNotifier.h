@@ -8,7 +8,5 @@ private:
   
 public:
   static void showError (GlobalError error);
-  ErrorNotifier (GlobalError error);
-  ~ErrorNotifier ();
 };
 

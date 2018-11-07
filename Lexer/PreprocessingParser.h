@@ -1,5 +1,6 @@
 #pragma once
-#include "StringParser.h"
+#include "Global.h"
+
 class PreprocessingParser :
   public BasicParser {
 private:

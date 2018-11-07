@@ -1,4 +1,3 @@
-#include "stdafx.h"
 #include "Global.h"
 #include "Reader.h"
 #include "BasicParser.h"
@@ -16,9 +15,9 @@ Reader::Reader (char* input, Lexer *lexer) {
     lineNum = 1;
     lineOffset = 0;
     traceBackFlag = false;
-    readerState = ReaderStates::SEARCHING;
+    state = ReaderStates::SEARCHING;
   } else {
-    // TO-DO: show error: no such file
+    ErrorNotifier::showError (GlobalError::NO_INPUT);
     delete this;
   }
 }
@@ -29,17 +28,11 @@ Reader::~Reader () {
 
 char Reader::readChar () {
   char t = fgetc (infile);
-  if (t == EOL) setNewLine ();
+  if (t == EOL) {
+    lineNum++;
+    lineOffset = 0;
+  }
   return t;
-}
-
-void Reader::setState (enum ReaderStates newState) {
-  readerState = newState;
-}
-
-void Reader::setNewLine () {
-  lineNum++;
-  lineOffset = 0;
 }
 
 void Reader::traceBack () {
@@ -47,9 +40,10 @@ void Reader::traceBack () {
 }
 
 bool Reader::openInputFile (char* input) {
-  if (strcmp (&input[strlen (input) - 2], ".c") != 0) {
-    return false; // check whether it's a .c file 
+  if (strcmp (&input[strlen (input) - 2], ".c") != 0) {// check whether it's a .c file 
+    return false; 
   } else if ((infile = fopen (input, "r")) == NULL) {
+    ErrorNotifier::showError (GlobalError::NO_INPUT);
     return false;
   } else {
     return true;
@@ -59,7 +53,7 @@ bool Reader::openInputFile (char* input) {
 void Reader::run () {
   do {
     step ();
-  } while (readerState != ReaderStates::TERMINATE);
+  } while (state != ReaderStates::TERMINATE);
 }
 
 void Reader::step () {
@@ -68,13 +62,13 @@ void Reader::step () {
     t = thisChar;
     traceBackFlag = false;
   } else {
-    t = readChar (); //即使读到了文件末尾，依然读EOF
+    t = readChar (); //Exception: 即使读到了文件末尾，依然读EOF
   }
 
-  switch (readerState) {
+  switch (state) {
   case ReaderStates::SEARCHING:
     if (!isblank (t) && t != EOF) {
-      setState (ReaderStates::PARSING);
+      state = ReaderStates::PARSING;
       if (isalpha (t) || t == '_') {
         parser = new IdentifierParser (lineNum, lineOffset);
       } else if (isdigit (t)) {
@@ -88,11 +82,12 @@ void Reader::step () {
       }
       parser->feedChar (t);
     } else if (t != EOF) {
-      setState (ReaderStates::SEARCHING);
+      state = ReaderStates::SEARCHING;
     } else { // t == EOF
-      setState (ReaderStates::TERMINATE);
+      state = ReaderStates::TERMINATE;
     }
     break;
+
   case ReaderStates::PARSING:
     GPS thisState = parser->feedChar (t);
     switch (thisState) {
@@ -100,21 +95,22 @@ void Reader::step () {
       break;
     case GPS::OVERSTEP:
       traceBack (); //如果发生回溯，说明此个字符并非属于该symbol的一部分，应该属于下一个symbol
-      /*-- Intentional Fall-down-- */
+      /*-- NO BREAK; Intentional Fall-down-- */
     case GPS::FINISHED:
-      lexer->deliverOutput (parser->returnPID ());
+      lexer->deliverOutput (parser->getPID ());
       delete parser;
       parser = NULL;
-      setState (ReaderStates::SEARCHING);
+      state = ReaderStates::SEARCHING;
       break;
     case GPS::SWITCH_TO_COMMENT_DODUBLE_SLASH:
       delete parser;
       parser = new CommentParser (lineNum, lineOffset, GPS::SWITCH_TO_COMMENT_DODUBLE_SLASH);
+      state = ReaderStates::PARSING;
       break;
     case GPS::SWITCH_TO_COMMENT_SLASH_STAR:
       delete parser;
       parser = new CommentParser (lineNum, lineOffset, GPS::SWITCH_TO_COMMENT_SLASH_STAR);
-      setState (ReaderStates::PARSING);
+      state = ReaderStates::PARSING;
       break;
    default:
       break;

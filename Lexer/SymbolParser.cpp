@@ -23,7 +23,7 @@ SymbolParser::~SymbolParser () {}
 void SymbolParser::readTable () {
   FILE *csv = fopen (tableAddress, "r");
   if (csv == NULL) {
-    //TO-DO: Error: no transTable found.
+    ErrorNotifier::showError (GlobalError::NO_TRANSTABLE);
     state = SS::ERROR;
     return;
   } else {
@@ -104,7 +104,6 @@ GPS SymbolParser::feedChar (char feed) {
   case SS::SS:
     return GPS::SWITCH_TO_COMMENT_SLASH_STAR;
   case SymbolParser::SS::ERROR:
-    //TO-DO: Report an error;
     return GPS::ERROR;
     break;
   default:

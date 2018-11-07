@@ -5,25 +5,11 @@ class BasicParser {
 protected:
   PID thisID;
 
-public:
+public: //virtual funs
   virtual GPS feedChar (char feed) = 0;
-  PID returnPID ();
+
   BasicParser (int lineNum, int lineOffset);
-  BasicParser::BasicParser ();
+  BasicParser ();
   virtual ~BasicParser ();
+  PID getPID ();
 };
-
-BasicParser::BasicParser (int lineNum, int lineOffset) {
-  thisID = new struct ID;
-  thisID->line = lineNum;
-  thisID->offset = lineOffset;
-}
-
-BasicParser::BasicParser () {}
-
-BasicParser::~BasicParser () {}
-
-PID BasicParser::returnPID () {
-  return thisID;
-}
-
