@@ -1,6 +1,15 @@
 #include "stdafx.h"
 #include "SymbolParser.h"
 
+const std::map<char, int> SymbolParser::offsetMap = {
+    {'I', 11}, // 'I' Stands for initial
+    {'+', 0},  {'-', 1},  {'*', 2},  {'/', 3},
+    {'<', 4},  {'>', 5},  {'!', 6},  {'=', 7},
+    {'&', 8},  {'^', 9},  {'|', 10}, {'.', 11},
+    {';', 12}, {'\'', 13},{'(', 14}, {')', 15},
+    {'[', 16}, {']', 17}, {'{', 18 },{'}', 19},
+    {'?', 20}, {',', 21}, {':', 22}, {'~', 23},
+};
 
 SymbolParser::SymbolParser (int lineNum, int offset) 
   : BasicParser(lineNum, offset) {
@@ -14,7 +23,7 @@ SymbolParser::~SymbolParser () {}
 void SymbolParser::readTable () {
   FILE *csv = fopen (tableAddress, "r");
   if (csv == NULL) {
-    //Error: no transTable found.
+    //TO-DO: Error: no transTable found.
     state = SS::ERROR;
     return;
   } else {
@@ -39,6 +48,12 @@ void SymbolParser::readTable () {
         case 2:
           (*colIt).nextState = SS::PEND;
           break;
+        case 3:
+          (*colIt).nextState = SS::SS; //slash-star
+          break;
+        case 4:
+          (*colIt).nextState = SS::DS; //double-slash
+          break;
         default:
           break;
         }
@@ -49,7 +64,15 @@ void SymbolParser::readTable () {
 }
 
 void SymbolParser::setState (char feed) {
-  int nextOffset = offsetMap.find (feed)->second;
+  auto next = offsetMap.find (feed);
+  int nextOffset;
+
+  if (next == offsetMap.end ()) {
+    nextOffset = transTable.end () - transTable.begin (); // 在transTable中，others位于最后一行
+  } else {
+    nextOffset = next->second;
+  }
+
   state = transTable[thisOffset][nextOffset].nextState;
   switch (state) {
   case SymbolParser::SS::PEND:
@@ -63,21 +86,26 @@ void SymbolParser::setState (char feed) {
   }
 }
 
-parserStates SymbolParser::feedChar (char feed) {
+GPS SymbolParser::feedChar (char feed) {
   setState (feed);
   switch (state) {
   case SymbolParser::SS::PEND:
     tempSymbol.push_back (feed);
-    return parserStates::CONTINUING;
+    return GPS::CONTINUING;
     break;
   case SymbolParser::SS::FIN: case SymbolParser::SS::OVER:
     tempSymbol.push_back (feed);
     thisID->unionValue.strValue = new std::string (tempSymbol);
-    return state == SS::FIN ? parserStates::FINISHED : parserStates::OVERSTEP;
+    return state == SS::FIN ? GPS::FINISHED : GPS::OVERSTEP;
     break;
+  case SS::DS:
+    return GPS::SWITCH_TO_COMMENT_DODUBLE_SLASH;
+    break;
+  case SS::SS:
+    return GPS::SWITCH_TO_COMMENT_SLASH_STAR;
   case SymbolParser::SS::ERROR:
     //TO-DO: Report an error;
-    return parserStates::ERROR;
+    return GPS::ERROR;
     break;
   default:
     break;

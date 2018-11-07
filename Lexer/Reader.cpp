@@ -94,26 +94,26 @@ void Reader::step () {
     }
     break;
   case ReaderStates::PARSING:
-    parserStates thisState = parser->feedChar (t);
+    GPS thisState = parser->feedChar (t);
     switch (thisState) {
-    case parserStates::CONTINUING:
+    case GPS::CONTINUING:
       break;
-    case parserStates::OVERSTEP:
+    case GPS::OVERSTEP:
       traceBack (); //如果发生回溯，说明此个字符并非属于该symbol的一部分，应该属于下一个symbol
       /*-- Intentional Fall-down-- */
-    case parserStates::FINISHED:
+    case GPS::FINISHED:
       lexer->deliverOutput (parser->returnPID ());
       delete parser;
       parser = NULL;
       setState (ReaderStates::SEARCHING);
       break;
-    case parserStates::SWITCH_TO_COMMENT_DODUBLE_SLASH:
+    case GPS::SWITCH_TO_COMMENT_DODUBLE_SLASH:
       delete parser;
-      parser = new CommentParser (lineNum, lineOffset, parserStates::SWITCH_TO_COMMENT_DODUBLE_SLASH);
+      parser = new CommentParser (lineNum, lineOffset, GPS::SWITCH_TO_COMMENT_DODUBLE_SLASH);
       break;
-    case parserStates::SWITCH_TO_COMMENT_SLASH_STAR:
+    case GPS::SWITCH_TO_COMMENT_SLASH_STAR:
       delete parser;
-      parser = new CommentParser (lineNum, lineOffset, parserStates::SWITCH_TO_COMMENT_SLASH_STAR);
+      parser = new CommentParser (lineNum, lineOffset, GPS::SWITCH_TO_COMMENT_SLASH_STAR);
       setState (ReaderStates::PARSING);
       break;
    default:

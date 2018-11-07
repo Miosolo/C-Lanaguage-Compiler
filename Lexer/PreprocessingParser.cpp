@@ -3,17 +3,18 @@
 
 PreprocessingParser::PreprocessingParser (int lineNum, int lineOffset)
   : BasicParser(lineNum, lineOffset) {
+  thisID->token = 700; // token of preprocessing token
   tempStr = "";
 }
 
 PreprocessingParser::~PreprocessingParser () {}
 
-parserStates PreprocessingParser::feedChar (char feed) {
+GPS PreprocessingParser::feedChar (char feed) {
   if (feed != '\n') {
     tempStr += feed;
-    return parserStates::CONTINUING;
+    return GPS::CONTINUING;
   } else {
     thisID->unionValue.strValue = new std::string (tempStr);
-    return parserStates::FINISHED;
+    return GPS::FINISHED;
   }
 }

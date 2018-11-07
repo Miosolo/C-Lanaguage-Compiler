@@ -9,7 +9,7 @@ protected:
   std::string tempStr;
 
 public:
-  parserStates feedChar (char feed);
+  GPS feedChar (char feed);
   StringParser (int lineNum, int offset);
   ~StringParser ();
 };

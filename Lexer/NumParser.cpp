@@ -36,7 +36,7 @@ void NumParser::setState (char feed) {
   }
 }
 
-parserStates NumParser::feedChar (char feed) {
+GPS NumParser::feedChar (char feed) {
   setState (feed);
   switch (state) {
   case NumParser::NS::INT: 
@@ -46,11 +46,11 @@ parserStates NumParser::feedChar (char feed) {
       decAcc += (feed - '0') * pow (10, dec10Pow);
       dec10Pow--;
     }
-    return parserStates::CONTINUING;
+    return GPS::CONTINUING;
     break;
   case NumParser::NS::TERM:
     thisID->unionValue.numValue = intAcc + decAcc;
-    return parserStates::OVERSTEP;
+    return GPS::OVERSTEP;
     break;
   default:
     break;

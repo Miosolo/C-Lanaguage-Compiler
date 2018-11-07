@@ -8,8 +8,8 @@ private:
   enum class CS { INIT, WORKING, SEMI_TERM, TERM } state;
 
 public:
-  parserStates feedChar (char feed);
-  CommentParser (int lineNum, int offset, parserStates initMode);
+  GPS feedChar (char feed);
+  CommentParser (int lineNum, int offset, GPS initMode);
   ~CommentParser ();
 };
 

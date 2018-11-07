@@ -2,7 +2,7 @@
 #include "stdafx.h"
 
 // Global Constants
-enum class parserStates {
+enum class GPS { // Stands for GlobalParserStates
   INITIAL,
   CONTINUING,
   FINISHED,
@@ -11,6 +11,8 @@ enum class parserStates {
   SWITCH_TO_COMMENT_DODUBLE_SLASH,
   SWITCH_TO_COMMENT_SLASH_STAR
 };
+
+enum class GlobalError { NO_INPUT, NO_TRANSTABLE };
 
 // Structs
 typedef struct ID {

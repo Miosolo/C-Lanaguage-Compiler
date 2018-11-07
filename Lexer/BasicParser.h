@@ -6,7 +6,7 @@ protected:
   PID thisID;
 
 public:
-  virtual parserStates feedChar (char feed) = 0;
+  virtual GPS feedChar (char feed) = 0;
   PID returnPID ();
   BasicParser (int lineNum, int lineOffset);
   BasicParser::BasicParser ();

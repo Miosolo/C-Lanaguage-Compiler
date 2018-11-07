@@ -25,7 +25,7 @@ private:
 
 private:
   void setState (char feed);
-  parserStates feedChar (char feed);
+  GPS feedChar (char feed);
 
 public:
   NumParser (int lineNum, int offset);
