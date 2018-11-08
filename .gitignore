@@ -3,13 +3,7 @@
 ################################################################################
 
 /.vs
-/Lexer/.vs/Lexer/v15
-*.sln
-*.vcxproj
-*.filters
-*.user
-/Test
 /Debug
-/Lexer/Debug
-
 /Lexer/UnitTest/Debug
+/Lexer/.vs/Lexer/v15
+/Lexer/Debug
