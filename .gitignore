@@ -10,3 +10,6 @@
 *.user
 /Test
 /Debug
+/Lexer/Debug
+
+/Lexer/UnitTest/Debug

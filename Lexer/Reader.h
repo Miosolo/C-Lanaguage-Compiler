@@ -7,7 +7,16 @@ class Reader;
 #include "Lexer.h"
 #endif // !LEXER_H
 
+#include "ErrorNotifier.h"
+
 #include "BasicParser.h"
+#include "BasicParser.h"
+#include "NumParser.h"
+#include "CommentParser.h"
+#include "PreprocessingParser.h"
+#include "StringParser.h"
+#include "IdentifierParser.h"
+#include "SymbolParser.h"
 
 class Reader {
 private:
