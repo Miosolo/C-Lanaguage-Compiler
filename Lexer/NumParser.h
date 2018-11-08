@@ -26,6 +26,8 @@ private:
 
 private:
   void setState (char feed);
+
+public:
   GPS feedChar (char feed);
 
 public:
