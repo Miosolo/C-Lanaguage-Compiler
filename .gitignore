@@ -6,4 +6,9 @@
 /Debug
 /Lexer/UnitTest/Debug
 /Lexer/.vs/Lexer/v15
+
 /Lexer/Debug
+*.vcxproj
+*.filters
+*.user
+*.sln

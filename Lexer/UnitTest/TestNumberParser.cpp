@@ -1,12 +1,9 @@
 #include "stdafx.h"
 #include "CppUnitTest.h"
 
-#include "Global.h"
-#include "BasicParser.h"
-#include "NumParser.h"
-
-#include "Numparser.cpp"
-#include "BasicParser.cpp"
+#include "../Global.h"
+#include "../Numparser.cpp"
+#include "../BasicParser.cpp"
 
 #include <cstdlib>
 #include <ctime>
