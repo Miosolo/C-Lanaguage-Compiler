@@ -1,5 +1,6 @@
-#include "Global.h"
 #include "Reader.h"
+
+#include "ErrorNotifier.h"
 #include "BasicParser.h"
 #include "NumParser.h"
 #include "CommentParser.h"
@@ -8,8 +9,7 @@
 #include "IdentifierParser.h"
 #include "SymbolParser.h"
 
-
-Reader::Reader (char* input, Lexer *lexer) {
+Reader::Reader (char *input, Lexer *lexer) {
   this->lexer = lexer;
   if (openInputFile (input)) {
     lineNum = 1;
@@ -39,7 +39,7 @@ void Reader::traceBack () {
   traceBackFlag = true;
 }
 
-bool Reader::openInputFile (char* input) {
+bool Reader::openInputFile (char *input) {
   if (strcmp (&input[strlen (input) - 2], ".c") != 0) {// check whether it's a .c file 
     return false; 
   } else if ((infile = fopen (input, "r")) == NULL) {
@@ -89,8 +89,7 @@ void Reader::step () {
     break;
 
   case ReaderStates::PARSING:
-    GPS thisState = parser->feedChar (t);
-    switch (thisState) {
+    switch (GPS thisState = parser->feedChar (t)) {
     case GPS::CONTINUING:
       break;
     case GPS::OVERSTEP:
@@ -116,6 +115,7 @@ void Reader::step () {
       break;
     }
     break;
+
   case ReaderStates::TERMINATE: default: //TERMINATE: 由外部work()予以销毁
     break;
   }

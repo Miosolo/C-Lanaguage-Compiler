@@ -5,13 +5,13 @@
 class Writer {
 private:
   FILE *outfile;
-  std::vector<PID> symbolList;
+  std::vector<ID*> symbolList;
 
 private:
   bool openOutputFile (char *outPara);
 
 public:
-  Writer (char* outPara);
+  Writer (char *outPara);
   ~Writer ();
   void addItem (PID newID);
   void writeFile ();

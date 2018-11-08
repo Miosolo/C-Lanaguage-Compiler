@@ -1,4 +1,3 @@
-#include "stdafx.h"
 #include "IdentifierParser.h"
 
 const std::map<std::string, int> IdentifierParser::keywordDict = {

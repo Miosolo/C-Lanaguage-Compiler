@@ -1,4 +1,3 @@
-#include "stdafx.h"
 #include "Writer.h"
 
 bool Writer::openOutputFile (char *output) {
@@ -51,7 +50,7 @@ void Writer::writeFile () {
     case 402: //Decimals
       fprintf (outfile, "%f,", p->unionValue.numValue);
     default: // Others, uses std::string
-      fprintf (outfile, "%s,", *(p->unionValue.strValue));
+      fprintf (outfile, "%s,", p->unionValue.strValue->c_str());
       break;
     }
     fprintf (outfile, "%d,%d,\n", p->line, p->offset);

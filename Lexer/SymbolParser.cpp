@@ -1,4 +1,3 @@
-#include "stdafx.h"
 #include "SymbolParser.h"
 
 const std::map<char, int> SymbolParser::offsetMap = {

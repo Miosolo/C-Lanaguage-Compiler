@@ -5,9 +5,6 @@
 #include <cstdio>
 #include <string>
 
-#include "ErrorNotifier.h"
-#include "BasicParser.h"
-
 // Global Constants
 enum class GPS { // Stands for GlobalParserStates
   INITIAL,
@@ -22,11 +19,11 @@ enum class GPS { // Stands for GlobalParserStates
 enum class GlobalError { NO_INPUT, NO_TRANSTABLE };
 
 // Structs
-typedef struct ID {
+typedef struct {
   int token;
   union {
     double numValue;
-    std::string* strValue;
+    std::string *strValue;
   } unionValue;
   int line;
   int offset;

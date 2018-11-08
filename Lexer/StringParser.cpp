@@ -1,4 +1,3 @@
-#include "stdafx.h"
 #include "StringParser.h"
 
 StringParser::StringParser (int lineNum, int lineOffset) 

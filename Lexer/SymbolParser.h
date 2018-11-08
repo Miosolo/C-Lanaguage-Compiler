@@ -1,5 +1,7 @@
 #pragma once
 #include "Global.h"
+#include "BasicParser.h"
+#include "ErrorNotifier.h"
 #include <map>
 #include <vector>
 

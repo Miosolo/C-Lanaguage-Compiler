@@ -1,4 +1,3 @@
-#include "stdafx.h"
 #include "NumParser.h"
 
 
@@ -22,11 +21,11 @@ void NumParser::setState (char feed) {
   }
 
   if (isdigit (feed)) {
-    col = 0;
+    row = 0;
   } else if (feed == '.') {
-    col = 1;
+    row = 1;
   } else {
-    col = 2;
+    row = 2;
   }
 
   if (transTable[col][row].nextState != NS::TERM) {
@@ -52,7 +51,7 @@ GPS NumParser::feedChar (char feed) {
     thisID->unionValue.numValue = intAcc + decAcc;
     return GPS::OVERSTEP;
     break;
-  default:
+  case NS::INIT: default: // NeverHappen
     break;
   }
 }

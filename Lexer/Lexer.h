@@ -1,7 +1,13 @@
 #pragma once
+#define LEXER_H
+
 #include "Global.h"
+
+class Lexer;
+
 #include "Reader.h"
 #include "Writer.h"
+
 
 class Lexer {
 private:
@@ -15,5 +21,4 @@ private:
 public:
   void run ();
   void deliverOutput (PID id);
-
 };
