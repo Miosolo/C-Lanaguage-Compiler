@@ -13,7 +13,7 @@ private:
   struct trans transTable[3][3] = {
     /*|Event \ State|    Initial     |   Integer          |      Decimal      |*/
     /*|Digit*/      {{NS::INT, 0},     {NS::INT, 0},         {NS::DEC, 0}},
-    /*| "." */      {{NS::DEC, 0},     {NS::DEC, 0},         {NS::TERM, 17}},
+    /*| "." */      {{NS::DEC, 0},     {NS::DEC, 0},         {NS::TERM, 402}},
     /*|Others*/     {{NS::TERM, 0},    {NS::TERM, 401},      {NS::TERM, 402}}
     /*               ^never happen^ */
   };

@@ -5,7 +5,8 @@ NumParser::NumParser (int lineNum, int lineOffset)
   : BasicParser(lineNum, lineOffset) {
   intAcc = 0;
   decAcc = 0;
-  dec10Pow = 0;
+  dec10Pow = -1;
+  state = NS::INIT;
 }
 
 NumParser::~NumParser () {}
@@ -28,11 +29,8 @@ void NumParser::setState (char feed) {
     row = 2;
   }
 
-  if (transTable[col][row].nextState != NS::TERM) {
-    state = transTable[col][row].nextState;
-  } else {
-    thisID->token = transTable[row][col].finalToken;
-  }
+  state = transTable[row][col].nextState;
+  if (transTable[row][col].nextState == NS::TERM) thisID->token = transTable[row][col].finalToken;
 }
 
 GPS NumParser::feedChar (char feed) {
@@ -40,6 +38,7 @@ GPS NumParser::feedChar (char feed) {
   switch (state) {
   case NumParser::NS::INT: 
     intAcc = intAcc * 10 + (feed - '0'); //char-to-int
+    break;
   case NumParser::NS::DEC:
     if (feed != '.') {
       decAcc += (feed - '0') * pow (10, dec10Pow);
