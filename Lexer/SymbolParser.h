@@ -15,11 +15,11 @@ private:
   struct trans { SS nextState; int nextOrToken; };
 
 private:
-  void readTable (); //read transTable.scv & fill the tranTable
   void setState (char feed);
   //static:
   static const std::map<char, int> offsetMap;
-  static std::vector<std::vector<struct trans> > *transTableP;
+  static std::vector<std::vector<SymbolParser::trans> > transTable;
+  static bool readTable (); //read transTable.scv & fill the tranTable
 
 public:
   GPS feedChar (char feed);

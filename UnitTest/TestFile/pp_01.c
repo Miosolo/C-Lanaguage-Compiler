@@ -1,3 +1,7 @@
+//This is just for fun
+
+#include <stdio.h>
+
 int main()
 {
   int raw, num10, num1;

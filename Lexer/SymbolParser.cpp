@@ -1,68 +1,74 @@
 #include "SymbolParser.h"
 
+std::vector<std::vector<SymbolParser::trans> > SymbolParser::transTable{ {} };
+
 const std::map<char, int> SymbolParser::offsetMap = {
-    {'I', 11}, // 'I' Stands for initial, only use once
+    {'I', 14}, // 'I' Stands for initial, only use once
     {'+', 0},  {'-', 1},  {'*', 2},  {'/', 3},
     {'<', 4},  {'>', 5},  {'!', 6},  {'=', 7},
-    {'&', 8},  {'^', 9},  {'|', 10}, {'.', 11},
-    {';', 12}, {'\'', 13},{'(', 14}, {')', 15},
-    {'[', 16}, {']', 17}, {'{', 18 },{'}', 19},
-    {'?', 20}, {',', 21}, {':', 22}, {'~', 23},
+    {'&', 8},  {'^', 9},  {'|', 10}, {'%', 11}, // "<<"-12 and ">>"-13 will never occur
+    {'.', 14}, {';', 15}, {'\'', 16},{'(', 17}, 
+    {')', 18}, {'[', 19}, {']', 20}, {'{', 21 },
+    {'}', 22}, {'?', 23}, {',', 24}, {':', 25}, 
+    {'~', 26},
 };
 
 SymbolParser::SymbolParser (int lineNum, int offset) 
   : BasicParser(lineNum, offset) {
   state = SS::INIT;
   thisOffset = offsetMap.find ('I')->second; //Set the X-axis value of the table
-  readTable ();
+  if (!readTable ()) SymbolParser::~SymbolParser();
 }
 
 SymbolParser::~SymbolParser () {}
 
-void SymbolParser::readTable () {
-  if (!transTable.empty ()) return;
+bool SymbolParser::readTable () {
+  if (!transTable[0].empty()) { 
+    return true;
+  } else { //__init__ == false
+    FILE *csv = fopen (GLOBAL_ABSOLUTE_TRANSTABLE, "r");
+    if (csv == NULL) {
+      ErrorNotifier::showError (GlobalError::NO_TRANSTABLE);
+      return false;
+    } else { // csv open secceeded.
+      int row, col;
+      fscanf (csv, "%d,%d", &row, &col); // Read Row & Col defined in the head of .csv
+      while (fgetc (csv) != '\n'); //Jump to the end of first line (no data)
 
-  FILE *csv = fopen (GLOBAL_ABSOLUTE_TRANSTABLE, "r");
-  if (csv == NULL) {
-    ErrorNotifier::showError (GlobalError::NO_TRANSTABLE);
-    state = SS::ERROR;
-    return;
-  } else {
-    int row, col;
-    fscanf (csv, "%d,%d", &row, &col); // Read Row & Col defined in the head of .csv
-    while (fgetc (csv) != '\n'); //Jump to the end of first line (no data)
-    transTable.resize (row); 
+      transTable.resize (row);
 
-    for (auto rowIt = transTable.begin (); rowIt != transTable.end (); rowIt++) {
-      (*rowIt).resize (col);
-      for (auto colIt = (*rowIt).begin (); colIt != (*rowIt).end (); colIt++) {
-        int tempState, tempInt;
-        fscanf (csv, "%d,%d", &tempState, &tempInt);
-        (*colIt).nextOrToken = tempInt;
-        switch (tempState) {
-        case 0:
-          (*colIt).nextState = SS::FIN;
-          break;
-        case 1:
-          (*colIt).nextState = SS::OVER;
-          break;
-        case 2:
-          (*colIt).nextState = SS::PEND;
-          break;
-        case 3:
-          (*colIt).nextState = SS::SS; //slash-star
-          break;
-        case 4:
-          (*colIt).nextState = SS::DS; //double-slash
-          break;
-        default:
-          break;
+      for (auto rowIt = transTable.begin (); rowIt != transTable.end (); rowIt++) {
+        (*rowIt).resize (col);
+        for (auto colIt = (*rowIt).begin (); colIt != (*rowIt).end (); colIt++) {
+          int tempState, tempInt;
+          fscanf (csv, "%d,%d", &tempState, &tempInt);
+          (*colIt).nextOrToken = tempInt;
+          switch (tempState) {
+          case 0:
+            (*colIt).nextState = SS::FIN;
+            break;
+          case 1:
+            (*colIt).nextState = SS::OVER;
+            break;
+          case 2:
+            (*colIt).nextState = SS::PEND;
+            break;
+          case 3:
+            (*colIt).nextState = SS::SS; //slash-star
+            break;
+          case 4:
+            (*colIt).nextState = SS::DS; //double-slash
+            break;
+          default:
+            break;
+          }
+          fgetc (csv); //Skip the following ',' of '\n'
         }
-        fgetc (csv); //Skip the following ',' of '\n'
       }
+      fclose (csv);
+      return true;
     }
-    fclose (csv);
-  }
+  }  
 }
 
 void SymbolParser::setState (char feed) {

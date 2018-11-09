@@ -2,7 +2,7 @@
 
 StringParser::StringParser (int lineNum, int lineOffset) 
   : BasicParser(lineNum, lineOffset) {
-  tempStr = "\"";
+  tempStr = "";
   thisID->token = 500; // token of strings
   state = SS::INIT;
 }

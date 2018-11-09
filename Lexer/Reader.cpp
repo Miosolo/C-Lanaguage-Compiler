@@ -19,6 +19,7 @@ Reader::~Reader () {
 
 char Reader::readChar () {
   char t = fgetc (infile);
+  lineOffset++;
   if (t == EOL) {
     lineNum++;
     lineOffset = 1;
@@ -72,7 +73,8 @@ void Reader::step () {
       } else {
         parser = new SymbolParser (lineNum, lineOffset);
       }
-      parser->feedChar (t);
+      state = ReaderStates::PARSING;
+      traceBack ();
     } else if (t != EOF) {
       state = ReaderStates::SEARCHING;
     } else { // t == EOF
@@ -112,5 +114,3 @@ void Reader::step () {
     break;
   }
 }
-  
-
