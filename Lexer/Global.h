@@ -5,7 +5,7 @@
 #include <cstdio>
 #include <string>
 
-#define GLOBAL_ABSOLUTE_INPUT "C:/Users/MX/source/repos/C-Lanaguage-Compiler/UnitTest/TestFile/pp_01.c"
+#define GLOBAL_ABSOLUTE_INPUT "C:/Users/MX/source/repos/C-Lanaguage-Compiler/UnitTest/TestFile/demoCode3.c"
 #define GLOBAL_ABSOLUTE_OUTPUT "C:/Users/MX/source/repos/C-Lanaguage-Compiler/UnitTest/TestFile/pp_01.csv"
 #define GLOBAL_ABSOLUTE_TRANSTABLE "C:/Users/MX/source/repos/C-Lanaguage-Compiler/Lexer/transTable.csv"
 
