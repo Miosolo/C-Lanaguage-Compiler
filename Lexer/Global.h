@@ -16,7 +16,7 @@ enum class GPS { // Stands for GlobalParserStates
   SWITCH_TO_COMMENT_SLASH_STAR
 };
 
-enum class GlobalError { NO_INPUT, NO_TRANSTABLE };
+enum class GlobalError { NO_INPUT, NO_TRANSTABLE, NO_OUTPUT};
 
 // Structs
 typedef struct {

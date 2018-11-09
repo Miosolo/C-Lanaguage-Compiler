@@ -10,11 +10,11 @@ class Lexer;
 
 
 class Lexer {
-private:
+public://private:
   Reader *aReader;
   Writer *aWriter;
 
-private:
+public:
   Lexer (char *in, char *out);
   ~Lexer ();
 

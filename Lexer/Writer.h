@@ -1,9 +1,10 @@
 #pragma once
 #include "Global.h"
+#include "ErrorNotifier.h"
 #include <vector>
 
 class Writer {
-private:
+public://private:
   FILE *outfile;
   std::vector<ID*> symbolList;
 

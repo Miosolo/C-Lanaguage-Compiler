@@ -4,7 +4,7 @@ Reader::Reader (char *input, Lexer *lexer) {
   this->lexer = lexer;
   if (openInputFile (input)) {
     lineNum = 1;
-    lineOffset = 0;
+    lineOffset = 1;
     traceBackFlag = false;
     state = ReaderStates::SEARCHING;
   } else {
@@ -21,7 +21,7 @@ char Reader::readChar () {
   char t = fgetc (infile);
   if (t == EOL) {
     lineNum++;
-    lineOffset = 0;
+    lineOffset = 1;
   }
   return t;
 }
@@ -54,11 +54,12 @@ void Reader::step () {
     traceBackFlag = false;
   } else {
     t = readChar (); //Exception: 即使读到了文件末尾，依然读EOF
+    thisChar = t;
   }
 
   switch (state) {
   case ReaderStates::SEARCHING:
-    if (!isblank (t) && t != EOF) {
+    if (!isspace (t) && t != EOF) {
       state = ReaderStates::PARSING;
       if (isalpha (t) || t == '_') {
         parser = new IdentifierParser (lineNum, lineOffset);
