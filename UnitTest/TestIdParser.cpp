@@ -7,7 +7,7 @@
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
-namespace LexerUnitTest {
+namespace ParserUnitTest {
 	TEST_CLASS (TestIdentifierParser) {
 public:
 

@@ -18,7 +18,7 @@ private:
   struct trans { SS nextState; int nextOrToken; };
   std::vector<std::vector<struct trans> > transTable;
 
-  const char *tableAddress = "./transTable.csv";
+  const char *tableAddress = "C:/Users/MX/source/repos/C-Lanaguage-Compiler/Lexer/transTable.csv";
 
 private:
   void readTable (); //read transTable.scv & fill the tranTable
