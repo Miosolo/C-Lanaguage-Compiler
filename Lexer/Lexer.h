@@ -10,7 +10,8 @@ class Lexer;
 
 
 class Lexer {
-public://private:
+//public://
+private:
   Reader *aReader;
   Writer *aWriter;
 

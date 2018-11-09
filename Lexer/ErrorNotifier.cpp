@@ -8,7 +8,7 @@ const std::map<GlobalError, std::string> ErrorNotifier::errorMessageMap = {
 
 void ErrorNotifier::showError (GlobalError error) {
   auto result = errorMessageMap.find (error);
-  if (result != errorMessageMap.end ()) {
+  if (result == errorMessageMap.end ()) {
     printf ("Error: Unkown error.\n");
   } else {
     printf ("%s", result->second.c_str()); // Error message found in map

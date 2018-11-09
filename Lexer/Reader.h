@@ -19,7 +19,8 @@ class Reader;
 #include "SymbolParser.h"
 
 class Reader {
-public://private:
+//public://
+private:
   Lexer *lexer;
   FILE *infile;
   int lineNum;
@@ -31,7 +32,8 @@ public://private:
   static const char EOL = '\n';
   enum class ReaderStates {SEARCHING, PARSING, TERMINATE} state;
 
-public://private:
+//public://
+private:
   char readChar ();
   void step ();
   void traceBack ();
