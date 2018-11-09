@@ -9,12 +9,12 @@ Reader::Reader (char *input, Lexer *lexer) {
     state = ReaderStates::SEARCHING;
   } else {
     ErrorNotifier::showError (GlobalError::NO_INPUT);
-    delete this;
+    Reader::~Reader ();
   }
 }
 
 Reader::~Reader () {
-  fclose (infile);
+  if (infile != NULL) fclose (infile);
 }
 
 char Reader::readChar () {
@@ -42,7 +42,7 @@ bool Reader::openInputFile (char *input) {
 }
 
 void Reader::run () {
-  do {
+  if (infile != NULL) do {
     step ();
   } while (state != ReaderStates::TERMINATE);
 }

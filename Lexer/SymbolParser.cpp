@@ -20,7 +20,9 @@ SymbolParser::SymbolParser (int lineNum, int offset)
 SymbolParser::~SymbolParser () {}
 
 void SymbolParser::readTable () {
-  FILE *csv = fopen (tableAddress, "r");
+  if (!transTable.empty ()) return;
+
+  FILE *csv = fopen (GLOBAL_ABSOLUTE_TRANSTABLE, "r");
   if (csv == NULL) {
     ErrorNotifier::showError (GlobalError::NO_TRANSTABLE);
     state = SS::ERROR;

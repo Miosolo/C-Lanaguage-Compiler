@@ -1,6 +1,3 @@
-// reverse a 2-digits number
-
-#include <stdio.h>
 int main()
 {
   int raw, num10, num1;
