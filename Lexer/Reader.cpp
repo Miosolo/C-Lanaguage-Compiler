@@ -94,12 +94,12 @@ void Reader::step () {
       break;
     case GPS::SWITCH_TO_COMMENT_DODUBLE_SLASH:
       delete parser;
-      parser = new CommentParser (lineNum, lineOffset, GPS::SWITCH_TO_COMMENT_DODUBLE_SLASH);
+      parser = new CommentParser (lineNum, lineOffset - 2, GPS::SWITCH_TO_COMMENT_DODUBLE_SLASH); //-2: 已经读入两个字符"//"
       state = ReaderStates::PARSING;
       break;
     case GPS::SWITCH_TO_COMMENT_SLASH_STAR:
       delete parser;
-      parser = new CommentParser (lineNum, lineOffset, GPS::SWITCH_TO_COMMENT_SLASH_STAR);
+      parser = new CommentParser (lineNum, lineOffset - 2, GPS::SWITCH_TO_COMMENT_SLASH_STAR);
       state = ReaderStates::PARSING;
       break;
    default:
