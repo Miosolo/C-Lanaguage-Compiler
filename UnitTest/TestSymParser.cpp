@@ -7,7 +7,7 @@
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
-namespace UnitTest {
+namespace ParserUnitTest {
   TEST_CLASS (TestSymParser) {
 public:
 
@@ -20,5 +20,17 @@ public:
 
     Assert::AreEqual (p1->token, 111);
     }  // namespace UnitTest
+
+  TEST_METHOD (TestNotEqual) {
+    SymbolParser smp2 (2, 23);
+    PID p2 = smp2.getPID ();
+
+    smp2.feedChar ('!');
+    smp2.feedChar ('=');
+
+    Assert::AreEqual ("!=", p2->unionValue.strValue->c_str ());
+    Assert::AreEqual (109, p2->token);
+  }
+
   };
 }

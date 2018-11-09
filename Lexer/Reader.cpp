@@ -4,24 +4,24 @@ Reader::Reader (char *input, Lexer *lexer) {
   this->lexer = lexer;
   if (openInputFile (input)) {
     lineNum = 1;
-    lineOffset = 0;
+    lineOffset = 1;
     traceBackFlag = false;
     state = ReaderStates::SEARCHING;
   } else {
     ErrorNotifier::showError (GlobalError::NO_INPUT);
-    delete this;
+    Reader::~Reader ();
   }
 }
 
 Reader::~Reader () {
-  fclose (infile);
+  if (infile != NULL) fclose (infile);
 }
 
 char Reader::readChar () {
   char t = fgetc (infile);
   if (t == EOL) {
     lineNum++;
-    lineOffset = 0;
+    lineOffset = 1;
   }
   return t;
 }
@@ -42,7 +42,7 @@ bool Reader::openInputFile (char *input) {
 }
 
 void Reader::run () {
-  do {
+  if (infile != NULL) do {
     step ();
   } while (state != ReaderStates::TERMINATE);
 }
@@ -54,11 +54,12 @@ void Reader::step () {
     traceBackFlag = false;
   } else {
     t = readChar (); //Exception: 即使读到了文件末尾，依然读EOF
+    thisChar = t;
   }
 
   switch (state) {
   case ReaderStates::SEARCHING:
-    if (!isblank (t) && t != EOF) {
+    if (!isspace (t) && t != EOF) {
       state = ReaderStates::PARSING;
       if (isalpha (t) || t == '_') {
         parser = new IdentifierParser (lineNum, lineOffset);
@@ -94,12 +95,12 @@ void Reader::step () {
       break;
     case GPS::SWITCH_TO_COMMENT_DODUBLE_SLASH:
       delete parser;
-      parser = new CommentParser (lineNum, lineOffset, GPS::SWITCH_TO_COMMENT_DODUBLE_SLASH);
+      parser = new CommentParser (lineNum, lineOffset - 2, GPS::SWITCH_TO_COMMENT_DODUBLE_SLASH); //-2: 已经读入两个字符"//"
       state = ReaderStates::PARSING;
       break;
     case GPS::SWITCH_TO_COMMENT_SLASH_STAR:
       delete parser;
-      parser = new CommentParser (lineNum, lineOffset, GPS::SWITCH_TO_COMMENT_SLASH_STAR);
+      parser = new CommentParser (lineNum, lineOffset - 2, GPS::SWITCH_TO_COMMENT_SLASH_STAR);
       state = ReaderStates::PARSING;
       break;
    default:

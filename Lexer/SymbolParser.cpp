@@ -1,7 +1,7 @@
 #include "SymbolParser.h"
 
 const std::map<char, int> SymbolParser::offsetMap = {
-    {'I', 11}, // 'I' Stands for initial
+    {'I', 11}, // 'I' Stands for initial, only use once
     {'+', 0},  {'-', 1},  {'*', 2},  {'/', 3},
     {'<', 4},  {'>', 5},  {'!', 6},  {'=', 7},
     {'&', 8},  {'^', 9},  {'|', 10}, {'.', 11},
@@ -20,7 +20,9 @@ SymbolParser::SymbolParser (int lineNum, int offset)
 SymbolParser::~SymbolParser () {}
 
 void SymbolParser::readTable () {
-  FILE *csv = fopen (tableAddress, "r");
+  if (!transTable.empty ()) return;
+
+  FILE *csv = fopen (GLOBAL_ABSOLUTE_TRANSTABLE, "r");
   if (csv == NULL) {
     ErrorNotifier::showError (GlobalError::NO_TRANSTABLE);
     state = SS::ERROR;
@@ -59,6 +61,7 @@ void SymbolParser::readTable () {
         fgetc (csv); //Skip the following ',' of '\n'
       }
     }
+    fclose (csv);
   }
 }
 
@@ -67,18 +70,18 @@ void SymbolParser::setState (char feed) {
   int nextOffset;
 
   if (next == offsetMap.end ()) {
-    nextOffset = transTable.end () - transTable.begin (); // 在transTable中，others位于最后一行
+    nextOffset = transTable.end () - transTable.begin () - 1; // 在transTable中，others位于最后一行
   } else {
     nextOffset = next->second;
   }
 
-  state = transTable[thisOffset][nextOffset].nextState;
+  state = transTable[nextOffset][thisOffset].nextState;
   switch (state) {
   case SymbolParser::SS::PEND:
-    thisOffset = transTable[thisOffset][nextOffset].nextOrToken;
+    thisOffset = transTable[nextOffset][thisOffset].nextOrToken;
     break;
   case SymbolParser::SS::FIN: case SymbolParser::SS::OVER:
-    thisID->token = transTable[thisOffset][nextOffset].nextOrToken;
+    thisID->token = transTable[nextOffset][thisOffset].nextOrToken;
     break;
   default:
     break;

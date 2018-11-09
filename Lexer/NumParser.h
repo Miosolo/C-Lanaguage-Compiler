@@ -10,6 +10,7 @@ private:
     NS nextState; // if has-next
     int finalToken; // if !has-next, token = 0
   };
+  //
   struct trans transTable[3][3] = {
     /*|Event \ State|    Initial     |   Integer          |      Decimal      |*/
     /*|Digit*/      {{NS::INT, 0},     {NS::INT, 0},         {NS::DEC, 0}},

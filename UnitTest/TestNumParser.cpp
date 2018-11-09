@@ -10,7 +10,7 @@
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
-namespace LexerUnitTest {
+namespace ParserUnitTest {
 	TEST_CLASS (TestNumberParser) {
 public:
 
@@ -52,8 +52,8 @@ public:
 		srand ((unsigned)time (NULL));
 		double magic = 1941.244;
 		while (kase--) {
-			std::string msg = "Case " + std::to_string (100 - kase);
-			Logger::WriteMessage (msg.c_str ());
+			//std::string msg = "Case " + std::to_string (100 - kase);
+			//Logger::WriteMessage (msg.c_str ());
 
 			NumParser num3 (1, 1);
 			PID resultID = num3.getPID ();
@@ -61,7 +61,7 @@ public:
 			double random = (double)(rand () * magic / RAND_MAX);
 
 			std::string tempNum = std::to_string (random);
-			Logger::WriteMessage (tempNum.c_str ());
+			//Logger::WriteMessage (tempNum.c_str ());
 			tempNum.push_back ('\n');
 
 			for each (char c in tempNum) {

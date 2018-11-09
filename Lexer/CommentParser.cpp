@@ -11,7 +11,7 @@ CommentParser::CommentParser (int lineNum, int lineOffset, GPS initMode):
     break;
   case GPS::SWITCH_TO_COMMENT_SLASH_STAR:
     tempStr = "/*";
-    mode = Mode::DS;
+    mode = Mode::SS;
     state = CS::INIT;
     break;
   default:
