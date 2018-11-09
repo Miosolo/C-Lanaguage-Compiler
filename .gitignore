@@ -1,32 +1,19 @@
-# Prerequisites
-*.d
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
 
-# Compiled Object files
-*.slo
-*.lo
-*.o
-*.obj
+/.vs
+/Debug
+/Lexer/UnitTest/Debug
+/Lexer/.vs/Lexer/v15
 
-# Precompiled Headers
-*.gch
-*.pch
-
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
-
-# Fortran module files
-*.mod
-*.smod
-
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
-
-# Executables
-*.exe
-*.out
-*.app
+/Lexer/Debug
+*.vcxproj
+*.filters
+*.user
+*.sln
+/Lexer/packages/Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.1.8.0
+/UnitTest/Debug
+/Lexer/Release
+/UnitTest/Release
+/Lexer/tranTable.csv
