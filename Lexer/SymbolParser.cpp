@@ -3,7 +3,7 @@
 std::vector<std::vector<SymbolParser::trans> > SymbolParser::transTable{ {} };
 
 const std::map<char, int> SymbolParser::offsetMap = {
-    {'I', 14}, // 'I' Stands for initial, only use once
+    //{'I', 14}, // 'I' Stands for initial, only use once
     {'+', 0},  {'-', 1},  {'*', 2},  {'/', 3},
     {'<', 4},  {'>', 5},  {'!', 6},  {'=', 7},
     {'&', 8},  {'^', 9},  {'|', 10}, {'%', 11}, // "<<"-12 and ">>"-13 will never occur
@@ -16,7 +16,7 @@ const std::map<char, int> SymbolParser::offsetMap = {
 SymbolParser::SymbolParser (int lineNum, int offset) 
   : BasicParser(lineNum, offset) {
   state = SS::INIT;
-  thisOffset = offsetMap.find ('I')->second; //Set the X-axis value of the table
+  thisOffset = 14; //Set the X-axis value of the table, 14 for 'initial'
   if (!readTable ()) SymbolParser::~SymbolParser();
 }
 
@@ -101,8 +101,10 @@ GPS SymbolParser::feedChar (char feed) {
     tempSymbol.push_back (feed);
     return GPS::CONTINUING;
     break;
-  case SymbolParser::SS::FIN: case SymbolParser::SS::OVER:
+  case SymbolParser::SS::FIN: 
     tempSymbol.push_back (feed);
+    // Intentional FALL-DOWN
+  case SymbolParser::SS::OVER:
     thisID->unionValue.strValue = new std::string (tempSymbol);
     return state == SS::FIN ? GPS::FINISHED : GPS::OVERSTEP;
     break;
