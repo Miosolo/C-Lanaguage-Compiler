@@ -38,6 +38,7 @@ GPS NumParser::feedChar (char feed) {
   switch (state) {
   case NumParser::NS::INT: 
     intAcc = intAcc * 10 + (feed - '0'); //char-to-int
+    return GPS::CONTINUING;
     break;
   case NumParser::NS::DEC:
     if (feed != '.') {
@@ -51,6 +52,7 @@ GPS NumParser::feedChar (char feed) {
     return GPS::OVERSTEP;
     break;
   case NS::INIT: default: // NeverHappen
+    return GPS::ERROR;
     break;
   }
 }
