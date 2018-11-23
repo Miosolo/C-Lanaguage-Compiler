@@ -19,3 +19,5 @@
 /Lexer/UnitTest/Release
 /Lexer/UnitTest/TestFile
 
+.vscode/settings.json
+*.pyc
