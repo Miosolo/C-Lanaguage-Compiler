@@ -5,9 +5,15 @@
 #include <cstdio>
 #include <string>
 
-#define GLOBAL_ABSOLUTE_INPUT "C:/Users/MX/source/repos/C-Lanaguage-Compiler/Lexer/Demo/source.c"
-#define GLOBAL_ABSOLUTE_OUTPUT "C:/Users/MX/source/repos/C-Lanaguage-Compiler/Lexer/Demo/symbols.csv"
-#define GLOBAL_ABSOLUTE_TRANSTABLE "C:/Users/MX/source/repos/C-Lanaguage-Compiler/Lexer/transTable.csv"
+#ifdef _DEBUG
+#define GLOBAL_ABSOLUTE_INPUT \
+  "C:/Users/MX/source/repos/C-Lanaguage-Compiler/Lexer/Demo/source.c"
+#define GLOBAL_ABSOLUTE_OUTPUT \
+  "C:/Users/MX/source/repos/C-Lanaguage-Compiler/Lexer/Demo/symbols.csv"
+#endif  // _DEBUG
+
+#define GLOBAL_ABSOLUTE_TRANSTABLE \
+  "transTable.csv"
 
 // Global Constants
 enum class GPS { // Stands for GlobalParserStates
