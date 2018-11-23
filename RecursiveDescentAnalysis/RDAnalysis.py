@@ -118,6 +118,7 @@ class Parser(object):
       print('No error occurred, valid expression!')
     else:
       with open('RecursiveDescentAnalysis/error.txt' ,'w') as f:
+        print('The details of fault have been written to error.txt at the same directory.')
         f.write('An error occurred at line' + str(self.sym['line']) + ', ' + str(self.sym['offset']))
 
     return result
