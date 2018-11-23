@@ -26,3 +26,7 @@ class Test_RDA(object):
   def test_run_source_2(self):
     p = Parser('RecursiveDescentAnalysis/TestFile/source2.csv')
     assert p.parse() == True
+
+  def test_run_source_3(self):
+    p = Parser('RecursiveDescentAnalysis/TestFile/source3.csv')
+    assert p.parse() == False

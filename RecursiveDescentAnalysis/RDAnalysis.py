@@ -60,10 +60,14 @@ class Parser(object):
       self.sym = {'token': int(line[0]), 'content': line[1], 'line': int(line[2]), 'offset': int(line[3])}
 
       if self.sym['token'] not in self.V_N and self.sym['token'] not in self.V_T:
-        raise RuntimeError('Unsuppoted Symbol.')
+        raise RuntimeError('Unsuppoted Symbol based on this grammar')
 
     except StopIteration:
       self.sym['token'] = self.sym['content'] = '#'
+    
+    except RuntimeError as re:
+      print('Error occurred at Line' + str(self.sym['line']) + ', ' + str(self.sym['offset']) + ': \n' + re.args[0])
+      raise
 
   def implement(self, seed):
     if self.sym['token'] in self.first[seed]:
@@ -82,7 +86,11 @@ class Parser(object):
           
           else: # v in V_T
             if v == self.sym['token']:
-              self.step()
+              try:
+                self.step()
+              except RuntimeError:
+                return False
+
             else: # V_T not match
               return False
         else:
@@ -95,12 +103,21 @@ class Parser(object):
       return False
 
   def parse(self):
-    self.step()
-    result = self.implement('E')
-    self.step()
+    result = True
+
+    try:
+      self.step()
+    except RuntimeError:
+      result = False
+
+    if result == True:
+      result = self.implement('E')
+      self.step()
 
     if result == True:
       print('No error occurred, valid expression!')
     else:
-      with open('error.txt' ,'w') as f:
-        f.write('An error occurred at line' + self.sym['line'] + ', ' + self.sym['offset'])
+      with open('RecursiveDescentAnalysis/error.txt' ,'w') as f:
+        f.write('An error occurred at line' + str(self.sym['line']) + ', ' + str(self.sym['offset']))
+
+    return result
