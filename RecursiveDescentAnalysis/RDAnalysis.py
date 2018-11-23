@@ -42,7 +42,7 @@ class Parser(object):
       raise IOError
     
     try:
-      self.outfile = open('RecursiveDescentAnalysis/details.txt', 'w')
+      self.outfile = open('RecursiveDescentAnalysis/TestFile/details.txt', 'w')
     except IOError:
       print('Error: cannot create details.txt.')
       raise IOError
