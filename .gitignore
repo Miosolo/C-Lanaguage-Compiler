@@ -13,7 +13,12 @@
 *.user
 *.sln
 /Lexer/packages/Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.1.8.0
-/UnitTest/Debug
 /Lexer/Release
-/UnitTest/Release
 /Lexer/tranTable.csv
+
+/Lexer/UnitTest/Release
+/Lexer/UnitTest/TestFile
+
+.vscode/settings.json
+*.pyc
+error.txt
