@@ -1,38 +1,44 @@
 import csv
 
 class Parser(object):
-  V_N = ['E', 'e', 'T', 't', 'F', 'i']
+  V_N = ['E', 'E\'', 'T', 'T\'', 'F', 'I']
   V_T = [101, 102, 103, 104, 137, 138, 300, 401, 405]
 
   first = {
-    'E': [137, 'i'],
-    'e': [101, 102],
-    'T': [137, 'i'],
-    't': [103, 104],
-    'F': [137, 'i'],
-    'i': [401, 405, 300]
+    'E': [137, 300, 401, 405], # (, int, float, id
+    'E\'': [101, 102],           # +, -
+    'T': [137, 300, 401, 405], # (, int, float, id
+    'T\'': [103, 104],           # *, /
+    'F': [137, 300, 401, 405], # (, int, float, id
+    'I': [401, 405, 300]       # int, float, id
   }
 
   follow = {
-    'E': [138, '#'],
-    'e': [138, '#'],
-    'T': [101, 102, '#'],
-    't': [101, 102, '#'],
-    'F': [101, 102, 103, 104, '#']
+    'E': [138, '#'],          # ), #
+    'E\'': [138, '#'],          # ) #
+    'T': [101, 102, 138, '#'],     # +, -, ), #
+    'T\'': [101, 102, 138, '#'],     # +, -, ), #
+    'F': [101, 102, 103, 104, 138, '#'], # +, -, *, /, ), #
+    'I': [101, 102, 103, 104, 138, '#'] # +, -, *, /, ), #
   }
 
   producer = {
-    'E': [['T', 'e']],
-    'e': [[101, 'T', 'e'], [102, 'T', 'e']],
-    'T': [['F', 't']],
-    't': [[103, 'F', 't'], [104, 'F', 't']],
-    'F': [[137, 'E', 138], ['i']]
+    'E': [['T', 'E\'']],
+    'E\'': [[101, 'T', 'E\''], [102, 'T', 'E\'']],
+    'T': [['F', 'T\'']],
+    'T\'': [[103, 'F', 'T\''], [104, 'F', 'T\'']],
+    'F': [[137, 'E', 138], ['I']],
+    'I': [[300], [401], [405]]
   }
 
   def __init__(self, inputFileLocation):
-    with open(inputFileLocation) as f:
+    try:
+      f = open(inputFileLocation, 'r')
       self.f_csv = csv.reader(f)
-      self.step()
+    except IOError:
+      print('Error: cannot find the specific symbol table.')
+      raise IOError
+
 
   def step(self):
     try:
@@ -47,13 +53,13 @@ class Parser(object):
         # TODO:识别关键字
         self.step()
 
-    except EOFError:
-      self.sym = '#'
+    except StopIteration:
+      self.sym['token'] = '#'
 
   def implement(self, seed):
-    if self.sym in self.first[seed]:
-        prods = [p for p in filter(lambda p: p[0] == self.sym or\
-                                   (p[0] in self.V_N and self.sym in self.first[p[0]]), self.producer[seed])]
+    if self.sym['token'] in self.first[seed]:
+        prods = [p for p in filter(lambda p: p[0] == self.sym['token'] or\
+                                   (p[0] in self.V_N and self.sym['token'] in self.first[p[0]]), self.producer[seed])]
         # then prods should be a len(1) list
         prod = prods[0]
 
@@ -65,15 +71,14 @@ class Parser(object):
               return False
           
           else: # v in V_T
-            if v == self.sym:
+            if v == self.sym['token']:
               self.step()
-              return True
             else: # V_T not match
               return False
         else:
           return True
 
-    elif self.sym in self.follow[seed]:
+    elif self.sym['token'] in self.follow[seed]:
       return True
 
     else: # this char in neither FIRST() nor FOLLOW()

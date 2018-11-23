@@ -2,7 +2,7 @@ from TheoreticalParser import Parser
 
 class TestSuite1(object):
   def test_init(self):
-    p = Parser('RecursiveDescentAnalysis/TestFile/source.txt')
+    p = Parser('RecursiveDescentAnalysis/TestFile/source.c')
     assert p.index == 0
     assert p.source == '1+3*(2*7+5)+i'
 
@@ -12,7 +12,7 @@ class TestSuite1(object):
     assert p.sym == '#'
   
   def test_parse_bare(self):
-    p = Parser('RecursiveDescentAnalysis/TestFile/test_bare.txt')
+    p = Parser('RecursiveDescentAnalysis/TestFile/test_bare.c')
     assert p.parse() == True
   
   def test_parse_fault(self):

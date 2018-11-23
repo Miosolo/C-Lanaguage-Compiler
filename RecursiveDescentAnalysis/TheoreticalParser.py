@@ -13,9 +13,9 @@ class Parser(object):
   follow = {
     'E': [')', '#'],
     'e': [')', '#'],
-    'T': ['+', '-', '#'],
-    't': ['+', '-', '#'],
-    'F': ['+', '-', '*', '/', '#']
+    'T': ['+', '-', '#', ')'],
+    't': ['+', '-', '#', ')'],
+    'F': ['+', '-', '*', '/', ')', '#']
   }
 
   producer = {
@@ -58,7 +58,6 @@ class Parser(object):
           else: # v in V_T
             if v == self.sym:
               self.step()
-              return True
             else: # V_T not match
               return False
         else:
