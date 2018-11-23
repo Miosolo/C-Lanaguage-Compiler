@@ -40,14 +40,20 @@ class Parser(object):
     except IOError:
       print('Error: cannot find the specific symbol table.')
       raise IOError
+    
+    try:
+      self.outfile = open('RecursiveDescentAnalysis/details.txt', 'w')
+    except IOError:
+      print('Error: cannot create details.txt.')
+      raise IOError
 
   def step(self):
     if self.sym != None:
-      print('='*20)
-      print('Using Producer: ' + self.usingProd['L'] + ' -> ' + str(self.usingProd['R']))
-      print('Parsed Expression: ' + str(self.parsedList))
-      print('Current symbol: ' + self.sym['content'])
-      self.parsedList.append(self.sym['content'])
+      self.outfile.write('='*20 + '\n')
+      self.outfile.write('Using Producer: ' + self.usingProd['L'] + ' -> ' + str(self.usingProd['R']) + '\n')
+      self.outfile.write('Parsed Expression: ' + str(self.parsedList) + '\n')
+      self.outfile.write('Current symbol: ' + self.sym['content'] + '\n')
+      self.parsedList.append(self.sym['content'] + '\n')
     else: # self.sym 不存在 <=> 第一次step
       pass
 
@@ -116,9 +122,11 @@ class Parser(object):
 
     if result == True:
       print('No error occurred, valid expression!')
+      self.outfile.write('\nNo error found :D')
     else:
       with open('RecursiveDescentAnalysis/error.txt' ,'w') as f:
         print('The details of fault have been written to error.txt at the same directory.')
+        self.outfile.write('\nAn error found, process terminated :E')
         f.write('An error occurred at line' + str(self.sym['line']) + ', ' + str(self.sym['offset']))
 
     return result
