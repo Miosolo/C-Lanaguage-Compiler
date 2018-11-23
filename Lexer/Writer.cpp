@@ -50,11 +50,16 @@ void Writer::writeFile () {
       case 402: //Decimals
         fprintf (outfile, "%f,", p->unionValue.numValue);
         break;
+      case 500://Literal String
+      case 600://Comment
+      case 700://Preprocessing
+        fprintf(outfile, "\"%s\",", p->unionValue.strValue->c_str());
+        break;
       default: // Others, uses std::string
         if (p->token / 100 == 1) {// this is a symbol
-          fprintf (outfile, "'%s',", p->unionValue.strValue->c_str ());
-        } else {
-          fprintf (outfile, "%s,", p->unionValue.strValue->c_str ());
+          fprintf (outfile, "\"'%s'\",", p->unionValue.strValue->c_str ());
+        } else { //Identifiers
+          fprintf(outfile, "%s,", p->unionValue.strValue->c_str());
         }
         break;
       }
