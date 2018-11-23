@@ -5,7 +5,7 @@ class Test_RDA(object):
   def test_init(self):
     p = Parser('RecursiveDescentAnalysis/TestFile/source.csv')
     p.step()
-    assert p.sym == {'token': 401, 'line': 1, 'offset': 2}
+    assert p.sym == {'token': 401, 'line': 1, 'offset': 2, 'content':'1'}
   
   @raises(IOError)
   def test_wrong_file(self):

@@ -35,26 +35,35 @@ class Parser(object):
     try:
       f = open(inputFileLocation, 'r')
       self.f_csv = csv.reader(f)
+      self.parsedList = []
+      self.sym = None
     except IOError:
       print('Error: cannot find the specific symbol table.')
       raise IOError
 
-
   def step(self):
+    if self.sym != None:
+      print('='*20)
+      print('Using Producer: ' + self.usingProd['L'] + ' -> ' + str(self.usingProd['R']))
+      print('Parsed Expression: ' + str(self.parsedList))
+      print('Current symbol: ' + self.sym['content'])
+      self.parsedList.append(self.sym['content'])
+    else: # self.sym 不存在 <=> 第一次step
+      pass
+
     try:
       line = next(self.f_csv) # is the list of elements in a line
       while len(line) == 0 or str.isdigit(line[0]) == False: #读入的是空行，或是标题行
         line = next(self.f_csv)
       # 现在line是一个有效行
 
-      self.sym = {'token': int(line[0]), 'line': int(line[2]), 'offset': int(line[3])}
+      self.sym = {'token': int(line[0]), 'content': line[1], 'line': int(line[2]), 'offset': int(line[3])}
 
-      if self.sym['token'] // 100 == 2: # token = 2xx <=> keywords
-        # TODO:识别关键字
-        self.step()
+      if self.sym['token'] not in self.V_N and self.sym['token'] not in self.V_T:
+        raise RuntimeError('Unsuppoted Symbol.')
 
     except StopIteration:
-      self.sym['token'] = '#'
+      self.sym['token'] = self.sym['content'] = '#'
 
   def implement(self, seed):
     if self.sym['token'] in self.first[seed]:
@@ -62,6 +71,7 @@ class Parser(object):
                                    (p[0] in self.V_N and self.sym['token'] in self.first[p[0]]), self.producer[seed])]
         # then prods should be a len(1) list
         prod = prods[0]
+        self.usingProd = {'L': seed, 'R': prod}
 
         for v in prod:
           if v in self.V_N:
@@ -86,4 +96,11 @@ class Parser(object):
 
   def parse(self):
     self.step()
-    return self.implement('E')
+    result = self.implement('E')
+    self.step()
+
+    if result == True:
+      print('No error occurred, valid expression!')
+    else:
+      with open('error.txt' ,'w') as f:
+        f.write('An error occurred at line' + self.sym['line'] + ', ' + self.sym['offset'])
