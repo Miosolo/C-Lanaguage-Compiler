@@ -1,17 +1,17 @@
-import queue
-
 def getFirstCollection(prodDict, V_N, V_T):
   '''
   Input: 
   prodDict = {
-    'V_N': [['a', 'b', 'T'], [...]] # 约定一个V_N的产生式均在此处，不出现左方V_N重复的情况
+    'A': [['a', 'b', 'T'], [...]] # 约定一个V_N的产生式均在此处，不出现左方V_N重复的情况
+    ...
   }
   V_N = set(V_N)
   V_T = set(V_T)
 
   Output:
-  FIRST_COLLECTION = {
-    'V_N': {'a', 'b', ...}
+  firstCollection = {
+    'A': {'a', 'b', ...},
+    ...
   }
   '''
   firstCollection = dict()
