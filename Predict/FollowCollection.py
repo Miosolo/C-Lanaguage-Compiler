@@ -20,8 +20,7 @@ def getFollowCollection(prodDict, V_N, V_T, firstCollection):
   '''
   followCollection = dict()
 
-  def getFirst(V):
-    return firstCollection[V] if V in V_N else set(V)
+  getFirst = lambda v: firstCollection[v] if v in V_N else set(v)
 
   def getFollow(leftV):
     if leftV in followCollection.keys():

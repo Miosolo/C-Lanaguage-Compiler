@@ -27,7 +27,7 @@ def getFirstCollection(prodDict, V_N, V_T):
         for rightV in prod:
           thisFirst = getFirst(rightV)
           if 'eps' in thisFirst:
-            VNFirst |= thisFirst if rightV == prod[len(prod)-1] else thisFirst - {'eps'}
+            VNFirst |= thisFirst if rightV == prod[len(prod)-1] else thisFirst - {['eps']}
             continue
           else: # 不含eps
             VNFirst |= thisFirst
