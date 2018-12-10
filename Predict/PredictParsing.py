@@ -60,7 +60,8 @@ def predictParsing(grammer, sentence):
   i = 0
   sentenceLen = len(list2str(sentence)) + 4
   output = lambda outList : print('{:^6}  {:<10}  {:<{slen}}  {:<15}'.format(*outList, slen = sentenceLen))
-
+  
+  print()
   output(['Step', 'Stack', 'Input', 'Production'])
 
   while i < len(sentence):

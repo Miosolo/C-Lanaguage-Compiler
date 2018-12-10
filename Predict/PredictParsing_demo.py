@@ -12,6 +12,6 @@ if __name__ == "__main__":
   V_T = {'eps', '#', 'a', 'n', 't', 'f', '(', ')', 'b'}
   grammer = {'prodDict': prodDict, 'V_N': V_N, 'V_T': V_T, 'S': 'S'}
   if PredictParsing.predictParsing(grammer, ['f', 'b', 'n', 'f', 'a', 't', '#']) == True:
-    print('Sucess!')
+    print('\nSucess :D')
   else:
-    print('Fail!')
+    print('\nFail :(')
