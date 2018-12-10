@@ -19,3 +19,6 @@
 *.pyc
 error.txt
 RecursiveDescentAnalysis/details.txt
+Lexer/UnitTest/UnitTest.vcxproj
+Lexer/UnitTest/UnitTest.vcxproj.filters
+Lexer/UnitTest/UnitTest.vcxproj.user

@@ -52,7 +52,7 @@ def predictParsing(grammer, sentence):
   def error():
     print('Unmatched symbol ' + sentence[i] + ' found at ' + str(i) + '.')
     return False
-  list2str = lambda l: reduce(lambda ele, substr: ('ε' if ele == 'eps' else ele) + substr, l)
+  list2str = lambda l: reduce(lambda ele, substr: ele + substr, l)
 
   predictTable = getPredictTable(grammer['prodDict'], grammer['V_N'], grammer['V_T'])
   symbolStack = ['#', grammer['S']]
