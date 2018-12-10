@@ -1,6 +1,6 @@
 import FirstCollection
 
-def test_first_1():
+def test_first():
   V_T = {'+', '*', '(', ')', 'eps', 'i'}
   V_N = {'E', 'E\'', 'F', 'T', 'T\''}
   prodDict = {

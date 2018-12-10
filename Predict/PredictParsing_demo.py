@@ -1,4 +1,5 @@
 import PredictParsing
+import FirstNFollow_demo
 from functools import reduce
 
 def showTable(preDict, V_N, V_T):
@@ -31,6 +32,8 @@ if __name__ == "__main__":
   V_N = {'S', 'T', 'B', 'T\'', 'F'}
   V_T = {'eps', '#', 'a', 'n', 't', 'f', '(', ')', 'b'}
   grammer = {'prodDict': prodDict, 'V_N': V_N, 'V_T': V_T, 'S': 'S'}
+
+  FirstNFollow_demo.demo(grammer)
 
   print('\n预测分析表：')
   showTable(PredictParsing.getPredictTable(prodDict, V_N, V_T), V_N, V_T)
