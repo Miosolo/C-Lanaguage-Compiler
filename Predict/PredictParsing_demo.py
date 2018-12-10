@@ -31,9 +31,10 @@ if __name__ == "__main__":
   V_N = {'S', 'T', 'B', 'T\'', 'F'}
   V_T = {'eps', '#', 'a', 'n', 't', 'f', '(', ')', 'b'}
   grammer = {'prodDict': prodDict, 'V_N': V_N, 'V_T': V_T, 'S': 'S'}
-  # 输出预测分析表
+
   print('\n预测分析表：')
   showTable(PredictParsing.getPredictTable(prodDict, V_N, V_T), V_N, V_T)
+  
   print('\n对\'fbnfat\'进行分析:')
   if PredictParsing.predictParsing(grammer, ['f', 'b', 'n', 'f', 'a', 't', '#']) == True:
     print('\nSucess :D')
