@@ -3,7 +3,7 @@ import FirstCollection
 import FollowCollection
   
 def demo(grammer):
-  list2str = lambda l: reduce(lambda ele, substr: ele + substr, l)
+  list2str = lambda l: reduce(lambda ele, substr: ele + substr, l) # 实现从数组到字符串的拼接转化
   prodStrize = lambda vn, prods: vn + '->' + \
                reduce(lambda ele, substr: ele + '|' + substr, map(lambda p: 'ε' if p == ['eps'] else list2str(p), prods))
   

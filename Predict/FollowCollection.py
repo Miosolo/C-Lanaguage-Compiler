@@ -24,7 +24,7 @@ def getFollowCollection(prodDict, V_N, V_T, firstCollection):
 
   def getFollow(leftV):
     if leftV in followCollection.keys():
-      return followCollection[leftV]
+      return followCollection[leftV] # 动态规划，避免重复计算
 
     else:
       thisFollow = set('#')
@@ -37,13 +37,13 @@ def getFollowCollection(prodDict, V_N, V_T, firstCollection):
       for vn, prodIndex, innerIndex in posis:
         if innerIndex != len(prodDict[vn][prodIndex]) - 1: #该符号不在一个表达式的结尾 <=> 有后续符号
           nextSym = prodDict[vn][prodIndex][innerIndex + 1]
-          thisFollow |= (getFirst(nextSym) - set(['eps']))
+          thisFollow |= (getFirst(nextSym) - set(['eps'])) # 规则1，下个符号的FIRST集 - eps
           if 'eps' in getFirst(nextSym):
-            thisFollow |= getFollow(nextSym)
-        elif vn != leftV: # 该符号在产生式尾部，且与左部不同（防止E->TE）
-          thisFollow |= getFollow(vn)
+            thisFollow |= getFollow(nextSym) # 规则1，下个符号的FIRST集中有eps <=> 递归计算其FOLLOW集
+        elif vn != leftV: # 该符号在产生式尾部，且与左部不同（防止E->TE类的无限递归）
+          thisFollow |= getFollow(vn) # 规则2
       
-      followCollection[leftV] = thisFollow
+      followCollection[leftV] = thisFollow # 存表中
       return thisFollow
 
   for vn in prodDict.keys():

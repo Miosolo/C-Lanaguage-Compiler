@@ -2,7 +2,7 @@ import PredictParsing
 import FirstNFollow_demo
 from functools import reduce
 
-list2str = lambda l: reduce(lambda ele, substr: ele + substr, l)
+list2str = lambda l: reduce(lambda ele, substr: ele + substr, l) # 实现从数组到字符串的拼接转化
 
 def showTable(preDict, V_N, V_T):
   colLabels = V_T - {'eps'}
