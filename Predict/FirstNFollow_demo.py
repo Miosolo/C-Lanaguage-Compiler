@@ -1,21 +1,6 @@
 from functools import reduce
 import FirstCollection
 import FollowCollection
-
-if __name__ == "__main__":
-  prodDict = {
-    'S': [['T', 'B']],
-    'B': [['b', 'T', 'B'], ['eps']],
-    'T': [['F', 'T\'']],
-    'T\'': [['a', 'F', 'T\''], ['eps']],
-    'F': [['n', 'F'], ['(', 'S', ')'], ['t'], ['f']],
-  }
-  V_N = {'S', 'T', 'B', 'T\'', 'F'}
-  V_T = {'eps', '#', 'a', 'n', 't', 'f', '(', ')', 'b'}
-  grammer = {'prodDict': prodDict, 'V_N': V_N, 'V_T': V_T, 'S': 'S'}
-  demo(grammer)
-
-
   
 def demo(grammer):
   list2str = lambda l: reduce(lambda ele, substr: ele + substr, l)
@@ -40,3 +25,28 @@ def demo(grammer):
   for vn, follow in followCollection.items():
     print(vn + ': ' + str(follow))
   
+
+if __name__ == "__main__":
+  prodDict = {
+    'S': [['T', 'B']],
+    'B': [['b', 'T', 'B'], ['eps']],
+    'T': [['F', 'T\'']],
+    'T\'': [['a', 'F', 'T\''], ['eps']],
+    'F': [['n', 'F'], ['(', 'S', ')'], ['t'], ['f']],
+  }
+  V_N = {'S', 'T', 'B', 'T\'', 'F'}
+  V_T = {'eps', '#', 'a', 'n', 't', 'f', '(', ')', 'b', '#'}
+  grammer1 = {'prodDict': prodDict, 'V_N': V_N, 'V_T': V_T, 'S': 'S'}
+  demo(grammer1)
+
+  V_T = {'+', '*', '(', ')', 'eps', 'i', '#'}
+  V_N = {'E', 'E\'', 'F', 'T', 'T\''}
+  prodDict = {
+    'E': [['T', 'E\'']],
+    'E\'': [['+', 'T', 'E\''], ['eps']],
+    'T': [['F', 'T\'']],
+    'T\'': [['*', 'F', 'T\''], ['eps']],
+    'F': [['(', 'E', ')'], ['i']]
+  }
+  grammer2 = {'prodDict': prodDict, 'V_N': V_N, 'V_T': V_T, 'S': 'E'}
+  demo(grammer2)

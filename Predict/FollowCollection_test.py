@@ -2,7 +2,7 @@ import FollowCollection
 import FirstCollection
 
 def test_follow():
-  V_T = {'+', '*', '(', ')', 'eps', 'i'}
+  V_T = {'+', '*', '(', ')', 'eps', 'i', '#'}
   V_N = {'E', 'E\'', 'F', 'T', 'T\''}
   prodDict = {
     'E': [['T', 'E\'']],
