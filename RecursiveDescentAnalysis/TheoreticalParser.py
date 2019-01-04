@@ -71,6 +71,6 @@ class Parser(object):
 
   def parse(self):
     self.step()
-    return self.implement('E')
+    return self.implement('E') and self.sym == '#'
 
     
