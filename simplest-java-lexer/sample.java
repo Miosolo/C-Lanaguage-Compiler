@@ -1,7 +1,5 @@
 package LinkList;
 
-#######
-
 //class of node
 class Node {
 	private Node next;
