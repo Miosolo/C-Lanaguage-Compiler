@@ -1,5 +1,5 @@
 # read the file
-CODE_PATH = 'simplest-java-lexer/sample.java'
+CODE_PATH = 'sample.java'
 with open(CODE_PATH) as f:
   codelines = f.readlines()
 
@@ -45,7 +45,7 @@ def stateful_parse(state, c):
     elif c in blankchars:
       return None, 'start'
     else:
-      raise RuntimeError
+      raise RuntimeError('Undefined sequence')
   elif state == 'id':
     if c in idchars | numchars:
       return None, 'id'
@@ -54,7 +54,7 @@ def stateful_parse(state, c):
     elif c in symchars:
       return (parsed, 'keyword' if parsed in keywords else 'identifier'), 'sym'
     else:
-      raise RuntimeError
+      raise RuntimeError('Undefined sequence')
   elif state == 'int':
     if c in numchars:
       return None, 'int'
@@ -65,7 +65,7 @@ def stateful_parse(state, c):
     elif c in blankchars:
       return (parsed, 'number'), 'start'
     else:
-      raise RuntimeError
+      raise RuntimeError('Undefined sequence')
   elif state == 'float':
     if c in numchars:
       return None, 'float'
@@ -74,7 +74,7 @@ def stateful_parse(state, c):
     elif c in blankchars:
       return (parsed, 'number'), 'start'
     else:
-      raise RuntimeError
+      raise RuntimeError('Undefined sequence')
   elif state == 'sym':
     #comment
     if parsed+c == '//':
@@ -93,14 +93,14 @@ def stateful_parse(state, c):
     elif c in numchars:
       return (parsed, 'symbol'), 'int'
     else:
-      raise RuntimeError
+      raise RuntimeError('Undefined sequence')
   elif state == 'str':
     if c != '"':
       return None, 'str'
     else:
       return (parsed+'"', 'string'), 'start'
   else:
-    raise RuntimeError
+    raise RuntimeError('Undefined sequence')
 
 
 # tuple: (position, class, value)
