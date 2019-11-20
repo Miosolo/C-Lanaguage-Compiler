@@ -2,7 +2,7 @@
 %%
 program
     : external_declaration
-    | program external_declaration
+    | program external_declaration  # TODO
     ;
 
 external_declaration
@@ -18,12 +18,12 @@ decl_or_stmt
 
 declarator_list
     : declarator
-    | declarator_list ',' declarator
+    | declarator_list ',' declarator # TODO
     ;
 
 intstr_list
     : initializer
-    | intstr_list ',' initializer
+    | intstr_list ',' initializer # TODO
     ;
     
 initializer
@@ -44,7 +44,7 @@ declarator
 
 parameter_list
         : parameter
-        | parameter_list ',' parameter
+        | parameter_list ',' parameter # TODO
         ;
 
 
@@ -73,7 +73,7 @@ statement
 
 statement_list
     : statement
-    | statement_list statement
+    | statement_list statement # TODO
     ;
 
 
@@ -89,20 +89,20 @@ expr
 
 cmp_expr
     : add_expr
-    | cmp_expr CMP add_expr
+    | cmp_expr CMP add_expr # TODO 
     ;
 
 add_expr
     : mul_expr
-    | add_expr '+' mul_expr
-    | add_expr '-' mul_expr
+    | add_expr '+' mul_expr # TODO 
+    | add_expr '-' mul_expr # TODO 
     ;
 
 mul_expr
     : primary_expr
-    | mul_expr '*' primary_expr
-    | mul_expr '/' primary_expr
-    | mul_expr '%' primary_expr
+    | mul_expr '*' primary_expr # TODO 
+    | mul_expr '/' primary_expr # TODO 
+    | mul_expr '%' primary_expr # TODO 
     | '-' primary_expr
     ;
 
@@ -120,11 +120,11 @@ primary_expr
     ;
 expr_list
     : expr
-    | expr_list ',' expr
+    | expr_list ',' expr    # TODO 
     ;
 id_list
     : ID
-    | id_list ',' ID
+    | id_list ',' ID    # TODO 
     ;
 
 
