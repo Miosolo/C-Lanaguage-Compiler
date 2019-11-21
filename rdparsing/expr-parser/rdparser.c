@@ -174,6 +174,7 @@ int main(int argc, char** argv) {
   while (1) {
     printf("input expression, 'q' to exit>");
     advance();
+
     int r = expr();
     printf("result: %d\n", r);
 

@@ -1,8 +1,12 @@
 
 %%
+%%
 program
-    : external_declaration
-    | program external_declaration  # CHECK
+    | external_declaration program_
+    ;
+program_
+    : external_declaration program_ 
+    |
     ;
 
 external_declaration
@@ -17,13 +21,19 @@ decl_or_stmt
     ;
 
 declarator_list
-    : declarator
-    | declarator_list ',' declarator # CHECK
+    : declarator ',' declarator_list_
+    ;
+declarator_list_
+    : declarator ',' declarator_list_
+    | 
     ;
 
 intstr_list
-    : initializer
-    | intstr_list ',' initializer # CHECK
+    : initializer ',' intstr_list_
+    ;
+intstr_list_
+    : initializer ',' intstr_list_
+    | 
     ;
     
 initializer
@@ -43,14 +53,18 @@ declarator
     ;
 
 parameter_list
-        : parameter
-        | parameter_list ',' parameter # CHECK
+        : parameter ',' parameter_list_
+        ;
+parameter_list_
+        : parameter ',' parameter_list_
+        |
         ;
 
 
 parameter
         : type ID
         ;
+
 type
         : INT
         | STR
@@ -66,44 +80,54 @@ statement
     | WHILE '(' expr ')' statement
     | RETURN ';'
     | RETURN expr ';'
-    | PRINT ';
+    | PRINT ';'
     | PRINT expr_list ';'
     | SCAN id_list ';'
     ;
 
 statement_list
-    : statement
-    | statement_list statement # CHECK
+    : statement statement_list_
     ;
-
+statement_list_:
+    : statement statement_list_
+    |
+    ;
 
 expression_statement
     : ';'
     | expr ';'
     ;
 
-
 expr
     : cmp_expr
     ;
 
 cmp_expr
-    : add_expr
-    | cmp_expr CMP add_expr # CHECK 
+    : add_expr CMP cmp_expr_
+    ;
+cmp_expr_
+    : add_expr CMP cmp_expr_
+    |
     ;
 
 add_expr
-    : mul_expr
-    | add_expr '+' mul_expr # CHECK 
-    | add_expr '-' mul_expr # CHECK 
+    : mul_expr add_expr_
+    ;
+add_expr_
+    : '+' mul_expr add_expr_
+    | '-' mul_expr add_expr_
+    |
     ;
 
 mul_expr
-    : primary_expr
-    | mul_expr '*' primary_expr # CHECK 
-    | mul_expr '/' primary_expr # CHECK 
-    | mul_expr '%' primary_expr # CHECK 
-    | '-' primary_expr
+    : '-' primary_expr mul_expr_
+    | primary_expr mul_expr_
+    ;
+mul_expr_
+    : '*' primary_expr mul_expr_
+    | '/' primary_expr mul_expr_
+    | '%' primary_expr mul_expr_
+    |
     ;
 
 primary_expr
@@ -118,13 +142,20 @@ primary_expr
     | ID '[' expr ']'
     | ID '[' expr ']' '=' expr
     ;
+
 expr_list
-    : expr
-    | expr_list ',' expr    # CHECK 
+    : expr expr_list_
     ;
+expr_list_
+    : ',' expr_list_
+    |
+    ;
+
 id_list
-    : ID
-    | id_list ',' ID    # CHECK 
+    : ID id_list_
     ;
-
-
+id_list_
+    : ',' ID id_list_
+    |
+    ;
+%%
