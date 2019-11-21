@@ -1,6 +1,5 @@
 cmake_minimum_required(VERSION 3.0.0)
-project(expr-parser VERSION 0.1.0)
+project(gram-parser VERSION 0.1.0)
 
-aux_source_directory(. DIR_SRCS)
-
-add_executable(expr.parser ${DIR_SRCS})
+add_executable(gram.checker gram.lex.c rdcheck.c)
+# add_executable(gram.parser gram.lex.c rdparse.c)

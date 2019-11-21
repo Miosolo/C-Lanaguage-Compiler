@@ -37,6 +37,28 @@ extern int yylex();
 extern char* yytext;
 int tok;
 
+// Non-terminal symbols
+void program();
+void external_declaration();
+void decl_or_stmt();
+void declarator_list();
+void intstr_list();
+void initializer();
+void declarator();
+void parameter_list();
+void parameter();
+void type();
+void statement();
+void statement_list();
+void expression_statement();
+void expr();
+void cmp_expr();
+void add_expr();
+void mul_expr();
+void primary_expr();
+void expr_list();
+void id_list();
+
 void advance() {
   static int call_cnt = 0;
   tok = yylex();
@@ -53,7 +75,11 @@ void advance() {
 //     ;
 void program() {
   while (1) {
+    // will abort in subroutine
     external_declaration();
+    if (tok == END) {
+      return;
+    }
   }
 }
 
@@ -73,23 +99,27 @@ void external_declaration() {
 //     | ';'
 //     ;
 void decl_or_stmt() {
-  if (tok == '{') {
-    advance();
-    if (tok != '}') {
-      statement_list();
-    }
-    // should be '}'
-    if (tok != '}') abort();
-    advance();
-  } else if (tok == ',') {
-    advance();
-    declarator_list();
-    if (tok != ';') abort();
-    advance();
-  } else if (tok == ';') {
-    advance();
-  } else {
-    abort();
+  switch (tok) {
+    case '{':
+      advance();
+      if (tok != '}') {
+        statement_list();
+      }
+      // should be '}'
+      if (tok != '}') abort();
+      advance();
+      break;
+    case ',':
+      advance();
+      declarator_list();
+      if (tok != ';') abort();
+      advance();
+      break;
+    case ';':
+      advance();
+      break;
+    default:
+      abort();
   }
 }
 
@@ -143,7 +173,8 @@ void declarator() {
   advance();
   switch (tok) {
     case '=':
-      advance() expr();
+      advance();
+      expr();
       break;
     case '(':
       advance();
@@ -166,6 +197,7 @@ void declarator() {
         advance();
         intstr_list();
         if (tok != '}') abort();
+        advance();
       }
       break;
     default:
@@ -200,7 +232,7 @@ void parameter() {
 //         | VOID
 //         ;
 void type() {
-  if (tok != INT && tok != STR && tok != VOID)  abort();
+  if (tok != INT && tok != STR && tok != VOID) abort();
   advance();
 }
 
@@ -218,66 +250,75 @@ void type() {
 //     | SCAN id_list ';'
 //     ;
 void statement() {
-  switch (tok)
-  {
-  case INT: case STR: case VOID: // type.first
-    type();
-    declarator_list();
-    if (tok != ';') abort();
-    advance();
-    break;
-  case '{':
-    advance();
-    statement_list();
-    if (tok != '}') abort();
-    advance();
-    break;
-  case IF:
-    advance();
-    if (tok != '(') abort();
-    advance();
-    expr();
-    if (tok != ')') abort();
-    advance();
-    statement();
-    if (tok == ELSE) {
+  switch (tok) {
+    case INT:
+    case STR:
+    case VOID:  // type.first
+      type();
+      declarator_list();
+      if (tok != ';') abort();
+      advance();
+      break;
+    case ';': // expr_statement.first
+    case '-':
+    case '(':
+    case ID:
+    case NUMBER:
+    case STRING:
+      expression_statement();
+      break;
+    case '{':
+      advance();
+      statement_list();
+      if (tok != '}') abort();
+      advance();
+      break;
+    case IF:
+      advance();
+      if (tok != '(') abort();
+      advance();
+      expr();
+      if (tok != ')') abort();
       advance();
       statement();
-    }
-    break;
-  case WHILE:
-    advance();
-    if (tok != '(') abort();
-    advance();
-    expr();
-    if (tok != ')') abort();
-    advance();
-    statement();
-    break;
-  case RETURN:
-    advance();
-    if (tok != ';') {
+      if (tok == ELSE) {
+        advance();
+        statement();
+      }
+      break;
+    case WHILE:
+      advance();
+      if (tok != '(') abort();
+      advance();
       expr();
-    }
-    if (tok != ';') abort();
-    advance();
-    break;
-  case PRINT:
-    advance();
-    if (tok != ';') {
-      expr_list();
-    }
-    if (tok != ';') abort();
-    advance();
-    break;
-  case SCAN:
-    advance();
-    id_list();
-    if (tok != ';') abort();
-    advance();
-    break;
-  default:
-    abort();
+      if (tok != ')') abort();
+      advance();
+      statement();
+      break;
+    case RETURN:
+      advance();
+      if (tok != ';') {
+        expr();
+      }
+      if (tok != ';') abort();
+      advance();
+      break;
+    case PRINT:
+      advance();
+      if (tok != ';') {
+        expr_list();
+      }
+      if (tok != ';') abort();
+      advance();
+      break;
+    case SCAN:
+      advance();
+      id_list();
+      if (tok != ';') abort();
+      advance();
+      break;
+    default:
+      abort();
   }
 }
 
@@ -288,15 +329,166 @@ void statement() {
 void statement_list() {
   while (1) {
     statement();
+    switch (tok) {  // statement.first
+      case INT:
+      case STR:
+      case VOID:
+      case '{':
+      case IF:
+      case WHILE:
+      case RETURN:
+      case PRINT:
+      case SCAN:
+        continue;
+    }
+    break;  // if tok not in statement.first
   }
 }
 
-void abort_handler(int sig) {
-  if (tok == END) {
-    printf("passed checking\n");
-  } else {
-    printf("illegal sequence found at [%s], aborting parsing\n", yytext);
+// expression_statement
+//     : ';'
+//     | expr ';'
+//     ;
+void expression_statement() {
+  if (tok != ';') {
+    expr();
   }
+  if (tok != ';') abort();
+  advance();
+}
+
+// expr
+//     : cmp_expr
+//     ;
+void expr() { cmp_expr(); }
+
+// cmp_expr
+//     : add_expr
+//     | cmp_expr CMP add_expr # CHECK
+//     ;
+void cmp_expr() {
+  add_expr();
+  while (tok == CMP) {
+    advance();
+    add_expr();
+  }
+}
+
+// add_expr
+//     : mul_expr
+//     | add_expr '+' mul_expr # CHECK
+//     | add_expr '-' mul_expr # CHECK
+//     ;
+void add_expr() {
+  mul_expr();
+  if (tok == '+' || tok == '-') {
+    advance();
+    mul_expr();
+  }
+}
+
+// mul_expr
+//     : primary_expr
+//     | mul_expr '*' primary_expr # CHECK
+//     | mul_expr '/' primary_expr # CHECK
+//     | mul_expr '%' primary_expr # CHECK
+//     | '-' primary_expr
+//     ;
+void mul_expr() {
+  if (tok == '-') advance();
+  primary_expr();
+  if (tok == '*' || tok == '/' || tok == '%') {
+    advance();
+    primary_expr();
+  }
+}
+
+// primary_expr
+//     : ID '(' expr_list ')'
+//     | ID '(' ')'
+//     | '(' expr ')'
+//     | ID
+//     | NUMBER
+//     | STRING
+//     | ID ASSIGN expr
+//     | ID '=' expr
+//     | ID '[' expr ']'
+//     | ID '[' expr ']' '=' expr
+//     ;
+void primary_expr() {
+  switch (tok) {
+    case ID:
+      advance();
+      switch (tok) {
+        case '(':
+          advance();
+          if (tok != ')') {
+            expr_list();
+          }
+          if (tok != ')') abort();
+          advance();
+          break;
+        case ASSIGN:
+        case '=':
+          advance();
+          expr();
+          break;
+        case '[':
+          advance();
+          expr();
+          if (tok != ']') abort();
+          advance();
+          if (tok == '=') {
+            advance();
+            expr();
+          }
+          break;
+      }
+      break;
+    case NUMBER:
+    case STRING:
+      advance();
+      break;
+    case '(':
+      advance();
+      expr();
+      if (tok != ')') abort();
+      advance();
+      break;
+    default:
+      abort();
+  }
+}
+
+// expr_list
+//     : expr
+//     | expr_list ',' expr    # CHECK 
+//     ;
+void expr_list() {
+  expr();
+  while (tok == ',') {
+    advance();
+    expr();
+  }
+}
+
+// id_list
+//     : ID
+//     | id_list ',' ID    # CHECK 
+//     ;
+void id_list() {
+  if (tok != ID)  abort();
+  advance();
+  while (tok == ',') {
+    advance();
+    if (tok != ID)  abort();
+    advance();
+  }
+}
+
+
+void abort_handler(int sig) {
+  printf("illegal sequence found at [%s], parsing aborted.\n", yytext);
   exit(1);
 }
 
@@ -304,13 +496,9 @@ int main(int argc, char** argv) {
   // register exception handler
   signal(SIGABRT, abort_handler);
 
-  while (1) {
-    printf("input expression, 'q' to exit>");
-    advance();
-    int r = expr();
-    printf("result: %d\n", r);
-    // past rr = astExpr();
-    // showAst(rr, 0);
-  }
+  // read from standard input
+  advance();
+  program();
+  printf("all checks passed, congratulations!\n");
   return 0;
 }
