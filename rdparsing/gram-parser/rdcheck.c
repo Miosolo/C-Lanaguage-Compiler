@@ -64,8 +64,6 @@ void advance() {
   tok = yylex();
   if (tok != END) {
     printf("tok[%d]: %s\n", ++call_cnt, yytext);
-  } else {
-    abort();
   }
 }
 
@@ -339,6 +337,7 @@ void statement_list() {
       case RETURN:
       case PRINT:
       case SCAN:
+        advance();
         continue;
     }
     break;  // if tok not in statement.first
@@ -381,7 +380,7 @@ void cmp_expr() {
 //     ;
 void add_expr() {
   mul_expr();
-  if (tok == '+' || tok == '-') {
+  while (tok == '+' || tok == '-') {
     advance();
     mul_expr();
   }
@@ -397,7 +396,7 @@ void add_expr() {
 void mul_expr() {
   if (tok == '-') advance();
   primary_expr();
-  if (tok == '*' || tok == '/' || tok == '%') {
+  while (tok == '*' || tok == '/' || tok == '%') {
     advance();
     primary_expr();
   }

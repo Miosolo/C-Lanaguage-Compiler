@@ -22,7 +22,7 @@ int factor();
 int expr();
 int term();
 
-int tok;
+enum yytokentype tok;
 
 void advance() {
   tok = yylex();
@@ -175,11 +175,11 @@ int main(int argc, char** argv) {
     printf("input expression, 'q' to exit>");
     advance();
 
-    int r = expr();
-    printf("result: %d\n", r);
+    // int r = expr();
+    // printf("result: %d\n", r);
 
-    // past rr = astExpr();
-    // showAst(rr, 0);
+    past rr = astExpr();
+    showAst(rr, 0);
   }
   return 0;
 }

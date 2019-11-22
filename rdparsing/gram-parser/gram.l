@@ -1,10 +1,20 @@
 %{
 enum yytokentype {
-  ID = 1, 
-  NUMBER, STRING, 
-  INT, STR, VOID, 
-  IF, ELSE, WHILE, RETURN, PRINT, SCAN,
-  CMP, ASSIGN,
+  END = 0,
+  ID,
+  NUMBER,
+  STRING,
+  INT,
+  STR,
+  VOID,
+  IF,
+  ELSE,
+  WHILE,
+  RETURN,
+  PRINT,
+  SCAN,
+  CMP,
+  ASSIGN,
 };
 %}
 

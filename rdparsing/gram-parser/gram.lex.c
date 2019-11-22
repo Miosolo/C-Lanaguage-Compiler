@@ -486,14 +486,24 @@ char *yytext;
 #line 1 "gram.l"
 #line 2 "gram.l"
 enum yytokentype {
-  ID = 1, 
-  NUMBER, STRING, 
-  INT, STR, VOID, 
-  IF, ELSE, WHILE, RETURN, PRINT, SCAN,
-  CMP, ASSIGN,
+  END = 0,
+  ID,
+  NUMBER,
+  STRING,
+  INT,
+  STR,
+  VOID,
+  IF,
+  ELSE,
+  WHILE,
+  RETURN,
+  PRINT,
+  SCAN,
+  CMP,
+  ASSIGN,
 };
-#line 495 "gram.lex.c"
-#line 496 "gram.lex.c"
+#line 505 "gram.lex.c"
+#line 506 "gram.lex.c"
 
 #define INITIAL 0
 
@@ -710,9 +720,9 @@ YY_DECL
 		}
 
 	{
-#line 11 "gram.l"
+#line 21 "gram.l"
 
-#line 715 "gram.lex.c"
+#line 725 "gram.lex.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -771,70 +781,70 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 12 "gram.l"
+#line 22 "gram.l"
 {
   return INT;
 }
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 15 "gram.l"
+#line 25 "gram.l"
 {
   return STR;
 }
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 18 "gram.l"
+#line 28 "gram.l"
 {
   return VOID;
 }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 21 "gram.l"
+#line 31 "gram.l"
 {
   return IF;
 }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 24 "gram.l"
+#line 34 "gram.l"
 {
   return ELSE;
 }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 27 "gram.l"
+#line 37 "gram.l"
 {
   return WHILE;
 }
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 30 "gram.l"
+#line 40 "gram.l"
 {
   return RETURN;
 }
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 33 "gram.l"
+#line 43 "gram.l"
 {
   return PRINT;
 }
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 36 "gram.l"
+#line 46 "gram.l"
 {
   return SCAN;
 }
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 40 "gram.l"
+#line 50 "gram.l"
 {
   // NUMBER
   return NUMBER;
@@ -842,7 +852,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 44 "gram.l"
+#line 54 "gram.l"
 {
   // ID
   return ID;
@@ -850,7 +860,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 48 "gram.l"
+#line 58 "gram.l"
 {
   // STRING
   return STRING;
@@ -858,21 +868,21 @@ YY_RULE_SETUP
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 53 "gram.l"
+#line 63 "gram.l"
 {
   return ASSIGN;
 }
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 56 "gram.l"
+#line 66 "gram.l"
 {
   return CMP;
 }
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 60 "gram.l"
+#line 70 "gram.l"
 {
   // other valid symbols
   return yytext[0];
@@ -881,20 +891,20 @@ YY_RULE_SETUP
 case 16:
 /* rule 16 can match eol */
 YY_RULE_SETUP
-#line 65 "gram.l"
+#line 75 "gram.l"
 { /* ignore whitespace */ }
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 66 "gram.l"
+#line 76 "gram.l"
 { printf("Mystery character %c\n", *yytext); }
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 67 "gram.l"
+#line 77 "gram.l"
 ECHO;
 	YY_BREAK
-#line 897 "gram.lex.c"
+#line 907 "gram.lex.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1899,7 +1909,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 67 "gram.l"
+#line 77 "gram.l"
 
 
 int yyerror(char *s)
