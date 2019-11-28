@@ -1,0 +1,161 @@
+
+%%
+%%
+program
+    | external_declaration program_
+    ;
+program_
+    : external_declaration program_ 
+    |
+    ;
+
+external_declaration
+    : type declarator decl_or_stmt
+    ;
+
+decl_or_stmt
+    : '{' statement_list '}'
+    | '{' '}'
+    | ',' declarator_list ';'
+    | ';'
+    ;
+
+declarator_list
+    : declarator ',' declarator_list_
+    ;
+declarator_list_
+    : declarator ',' declarator_list_
+    | 
+    ;
+
+intstr_list
+    : initializer ',' intstr_list_
+    ;
+intstr_list_
+    : initializer ',' intstr_list_
+    | 
+    ;
+    
+initializer
+    : NUMBER
+    | STRING
+    ;
+   
+declarator
+    : ID
+    | ID '=' expr
+    | ID '(' parameter_list ')'
+    | ID '(' ')'
+    | ID '[' expr ']'
+    | ID '[' ']'
+    | ID '[' expr ']' '=' '{' intstr_list '}'
+    | ID '[' ']' '=' '{' intstr_list '}'
+    ;
+
+parameter_list
+        : parameter ',' parameter_list_
+        ;
+parameter_list_
+        : parameter ',' parameter_list_
+        |
+        ;
+
+
+parameter
+        : type ID
+        ;
+
+type
+        : INT
+        | STR
+        | VOID
+        ;
+
+statement
+    : type declarator_list ';'
+    | '{' statement_list '}'
+    | expr_statement
+    | IF '(' expr ')' statement
+    | IF '(' expr ')' statement ELSE statement
+    | WHILE '(' expr ')' statement
+    | RETURN ';'
+    | RETURN expr ';'
+    | PRINT ';'
+    | PRINT expr_list ';'
+    | SCAN id_list ';'
+    ;
+
+statement_list
+    : statement statement_list_
+    ;
+statement_list_:
+    : statement statement_list_
+    |
+    ;
+
+expression_statement
+    : ';'
+    | expr ';'
+    ;
+
+expr
+    : cmp_expr
+    ;
+
+cmp_expr
+    : add_expr CMP cmp_expr_
+    ;
+cmp_expr_
+    : add_expr CMP cmp_expr_
+    |
+    ;
+
+add_expr
+    : mul_expr add_expr_
+    ;
+add_expr_
+    : '+' mul_expr add_expr_
+    | '-' mul_expr add_expr_
+    |
+    ;
+
+mul_expr
+    : '-' primary_expr mul_expr_
+    | primary_expr mul_expr_
+    ;
+mul_expr_
+    : '*' primary_expr mul_expr_
+    | '/' primary_expr mul_expr_
+    | '%' primary_expr mul_expr_
+    |
+    ;
+
+primary_expr
+    : ID '(' expr_list ')'
+    | ID '(' ')'
+    | '(' expr ')'
+    | ID
+    | NUMBER
+    | STRING
+    | ID ASSIGN expr
+    | ID '=' expr
+    | ID '[' expr ']'
+    | ID '[' expr ']' '=' expr
+    ;
+
+expr_list
+    : expr expr_list_
+    ;
+expr_list_
+    : ',' expr_list_
+    |
+    ;
+
+id_list
+    : ID id_list_
+    ;
+id_list_
+    : ',' ID id_list_
+    |
+    ;
+%%
